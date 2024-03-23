@@ -26,7 +26,7 @@ public class PatientController {
     public String savePatient(@RequestBody Patient patient)
     {
         String id = patientService.addPatient(patient);
-        return id;
+        return id; 
     }
     @PostMapping(path = "/login")
     public ResponseEntity<?> loginPatient(@RequestBody LoginDTO loginDTO)
