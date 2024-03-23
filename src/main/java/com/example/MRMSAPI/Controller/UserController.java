@@ -1,0 +1,75 @@
+package com.example.MRMSAPI.Controller;
+import com.example.MRMSAPI.Service.UserService;
+import com.example.MRMSAPI.Dto.LoginDTO;
+import com.example.MRMSAPI.Entity.User;
+import com.example.MRMSAPI.response.LoginResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@CrossOrigin
+@RequestMapping("api/v1/user")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private HttpSession session;
+
+    @PostMapping(path = "/save")
+    public String saveUser(@RequestBody User user)
+    {
+        String id = userService.addUser(user);
+        return id;
+    }
+    @PostMapping(path = "/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO)
+    {
+        LoginResponse loginResponse = userService.loginUser(loginDTO);
+        return ResponseEntity.ok(loginResponse);
+    }
+
+    @PostMapping(path = "/logout")
+    public ResponseEntity<String> logoutUser() {
+        session.invalidate(); // Invalidate session upon logout
+        return ResponseEntity.ok("Logout Successful");
+    }
+
+    @GetMapping(path = "/current-user-id")
+    public ResponseEntity<Integer> getCurrentUserId() {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            return ResponseEntity.ok(loggedInUser.getUserid());
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+
+    @PutMapping(path = "/update")
+    public ResponseEntity<String> updateUserDetails(@RequestBody User updatedUser) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            userService.updateUserDetails(loggedInUser, updatedUser);
+            return ResponseEntity.ok("User details updated successfully");
+        } else {
+            return ResponseEntity.badRequest().body("User not logged in or unauthorized to perform this action");
+        }
+    }
+
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<String> deleteUser() {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            userService.deleteUser(loggedInUser);
+            session.invalidate();
+            return ResponseEntity.ok("User details deleted successfully");
+
+        } else {
+            return ResponseEntity.badRequest().body("User not logged in or unauthorized to perform this action");
+        }
+    }
+}
