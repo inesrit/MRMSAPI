@@ -1,4 +1,5 @@
 package com.example.MRMSAPI.Entity;
+import com.example.MRMSAPI.Enum.RequestStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -38,5 +39,6 @@ public class Prescription {
     private String pxDate;
 
     @Column(name = "px_status", length = 255)
-    private String pxStatus;
+    @Enumerated(EnumType.STRING)
+    private RequestStatus pxStatus;
 }

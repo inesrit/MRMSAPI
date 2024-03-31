@@ -37,6 +37,8 @@ public class UserService {
                 user.getUsername(),
                 user.getEmail(),
                 this.passwordEncoder.encode(user.getPassword()),
+                user.getLocation(),
+                user.getContactNumber(),
                 patients
         );
 
@@ -74,6 +76,8 @@ public class UserService {
         loggedInUser.setUsername(updatedUser.getUsername());
         loggedInUser.setEmail(updatedUser.getEmail());
         loggedInUser.setPassword(this.passwordEncoder.encode(updatedUser.getPassword()));
+        loggedInUser.setLocation(updatedUser.getLocation());
+        loggedInUser.setContactNumber(updatedUser.getContactNumber());
         userRepo.save(loggedInUser);
     }
 
@@ -91,4 +95,19 @@ public class UserService {
     }
 
 
+    public void addPatientToUser(User user, Patient patient) {
+        List<Patient> patients = user.getPatients();
+        if (!patients.contains(patient)) {
+            patients.add(patient);
+            user.setPatients(patients);
+            userRepo.save(user);
+        }
+    }
+
+    public void removePatientFromUser(User user, Patient patient) {
+        List<Patient> patients = user.getPatients();
+        patients.remove(patient);
+        user.setPatients(patients);
+        userRepo.save(user);
+    }
 }

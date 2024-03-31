@@ -1,7 +1,9 @@
 package com.example.MRMSAPI.Entity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name="patient")
@@ -41,11 +43,17 @@ public class Patient {
     @Column(name = "emergency_contact_number", length = 255)
     private int emergencyContactNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = true)
-    private User user; // Added User association
 
-    public Patient(int patientid, String patientName, String email, String password, String address, String contactNumber, String birthDate, int weight, int height, String healthcareId, String emergencyContactName, int emergencyContactNumber, User user) {
+    @ManyToMany
+    @Fetch(FetchMode.JOIN)
+    @JoinTable(
+            name = "user_patient",
+            joinColumns = @JoinColumn(name = "patient_id", nullable = true),
+            inverseJoinColumns = @JoinColumn(name = "user_id", nullable = true)
+    )
+    private List<User> users;
+
+    public Patient(int patientid, String patientName, String email, String password, String address, String contactNumber, String birthDate, int weight, int height, String healthcareId, String emergencyContactName, int emergencyContactNumber, List<User> users) {
         this.patientid = patientid;
         this.patientName = patientName;
         this.email = email;
@@ -58,7 +66,7 @@ public class Patient {
         this.healthcareId = healthcareId;
         this.emergencyContactName = emergencyContactName;
         this.emergencyContactNumber = emergencyContactNumber;
-        this.user = user;
+        this.users = users;
     }
 
     public Patient() {
@@ -161,12 +169,12 @@ public class Patient {
         this.emergencyContactNumber = emergencyContactNumber;
     }
 
-    public User getUser() {
-        return user;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsers(List<User> user) {
+        this.users = user;
     }
 
     @Override
@@ -184,7 +192,7 @@ public class Patient {
                 ", healthcareId='" + healthcareId + '\'' +
                 ", emergencyContactName='" + emergencyContactName + '\'' +
                 ", emergencyContactNumber=" + emergencyContactNumber +
-                ", user=" + user +
+                ", user=" + users +
                 '}';
     }
 }

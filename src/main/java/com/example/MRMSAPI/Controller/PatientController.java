@@ -95,4 +95,6 @@ public class PatientController {
         }
     }
 
+
+    //TODO create method to get all patients
 }

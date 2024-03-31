@@ -1,4 +1,5 @@
 package com.example.MRMSAPI.Entity;
+import com.example.MRMSAPI.Enum.RequestStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -28,11 +29,15 @@ public class Appointment {
     @Column(name = "app_date", length = 255)
     private String appDate;
 
+    @Column(name = "app_time", length = 255)
+    private String appTime;
+
     @Column(name = "app_comments", length = 255)
     private String appComments;
 
     @Column(name = "app_status", length = 255)
-    private String appStatus;
+    @Enumerated(EnumType.STRING)
+    private RequestStatus appStatus;
 
 
 }

@@ -18,6 +18,8 @@ import java.util.Optional;
 @Service
 public class PatientService {
 
+    private List<User> user = new ArrayList<>();
+
     @Autowired
     private PatientRepo patientRepo;
 
@@ -42,7 +44,7 @@ public class PatientService {
                 patient.getHealthcareId(),
                 patient.getEmergencyContactName(),
                 patient.getEmergencyContactNumber(),
-                patient.getUser()
+                user
 
         );
 
@@ -104,6 +106,23 @@ public class PatientService {
 
     public Patient getPatientDetailsById(int patientId) {
         return patientRepo.findById(patientId).orElse(null);
+    }
+
+
+    public void addUserToPatient(User user, Patient patient) {
+        List<User> users = patient.getUsers();
+        if (!users.contains(user)) {
+            users.add(user);
+            patient.setUsers(users);
+            patientRepo.save(patient);
+        }
+    }
+
+    public void removeUserFromPatient(User user, Patient patient) {
+        List<User> users = patient.getUsers();
+        users.remove(user);
+        patient.setUsers(users);
+        patientRepo.save(patient);
     }
 
 }

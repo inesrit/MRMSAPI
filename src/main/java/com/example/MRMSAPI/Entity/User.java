@@ -1,4 +1,5 @@
 package com.example.MRMSAPI.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import com.example.MRMSAPI.Entity.Patient;
 
@@ -22,21 +23,27 @@ public class User {
     @Column(name = "password", length = 255)
     private String password;
 
+    @Column(name = "user_location", nullable = true)
+    private String location;
 
-    // Added reference to Patient
-    @Column(name = "patient", length = 255)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Column(name = "user_contact_number", nullable = true)
+    private String contactNumber;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<Patient> patients;
 
 
     public User() {
     }
 
-    public User(int userid, String username, String email, String password, List<Patient> patients) {
+    public User(int userid, String username, String email, String password, String location, String contactNumber, List<Patient> patients) {
         this.userid = userid;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.location = location;
+        this.contactNumber = contactNumber;
         this.patients = patients;
     }
 
@@ -72,6 +79,22 @@ public class User {
         this.password = password;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
     public List<Patient> getPatients() {
         return patients;
     }
@@ -87,6 +110,8 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", location='" + location + '\'' +
+                ", contactNumber='" + contactNumber + '\'' +
                 ", patients=" + patients +
                 '}';
     }
