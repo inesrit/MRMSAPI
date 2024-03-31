@@ -25,7 +25,7 @@ public class User {
 
     // Added reference to Patient
     @Column(name = "patient", length = 255)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Patient> patients;
 
 

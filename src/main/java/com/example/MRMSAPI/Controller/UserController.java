@@ -19,6 +19,7 @@ public class UserController {
     @Autowired
     private HttpSession session;
 
+
     @PostMapping(path = "/save")
     public String saveUser(@RequestBody User user)
     {
@@ -72,4 +73,23 @@ public class UserController {
             return ResponseEntity.badRequest().body("User not logged in or unauthorized to perform this action");
         }
     }
+
+
+    @GetMapping(path = "/details")
+    public ResponseEntity<User> getLoggedInUserDetails() {
+        User loggedInUser = userService.getLoggedInUserDetails();
+        return ResponseEntity.ok(loggedInUser);
+    }
+
+    @GetMapping(path = "/user-details")
+    public ResponseEntity<User> getUserDetailsById(@RequestParam int userId) {
+        User user = userService.getUserDetailsById(userId);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

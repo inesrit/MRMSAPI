@@ -95,4 +95,15 @@ public class PatientService {
     public void deletePatient(Patient loggedInPatient) {
         patientRepo.delete(loggedInPatient);
     }
+
+
+    public Patient getLoggedInPatientDetails() {
+        HttpSession session = request.getSession(true);
+        return (Patient) session.getAttribute("loggedInPatient");
+    }
+
+    public Patient getPatientDetailsById(int patientId) {
+        return patientRepo.findById(patientId).orElse(null);
+    }
+
 }

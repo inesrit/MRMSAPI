@@ -15,6 +15,9 @@ public class Prescription {
     @Column(name = "patient_id", length = 45)
     private int patientid;
 
+    @Column(name = "px_name", length = 255)
+    private String pxName;
+
     @Column(name = "px_dose", length = 255)
     private String pxDose;
 
@@ -27,8 +30,9 @@ public class Prescription {
     @Column(name = "px_condition", length = 255)
     private String pxCondition;
 
-    @Column(name = "provider", length = 255)
-    private String provider;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user; // Added User association
 
     @Column(name = "px_date", length = 255)
     private String pxDate;

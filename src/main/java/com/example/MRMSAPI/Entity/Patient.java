@@ -42,7 +42,7 @@ public class Patient {
     private int emergencyContactNumber;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = true) // Assuming the column name in the patient table
+    @JoinColumn(name = "user_id", nullable = true)
     private User user; // Added User association
 
     public Patient(int patientid, String patientName, String email, String password, String address, String contactNumber, String birthDate, int weight, int height, String healthcareId, String emergencyContactName, int emergencyContactNumber, User user) {

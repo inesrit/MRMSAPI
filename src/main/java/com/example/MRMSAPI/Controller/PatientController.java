@@ -26,7 +26,7 @@ public class PatientController {
     public String savePatient(@RequestBody Patient patient)
     {
         String id = patientService.addPatient(patient);
-        return id; 
+        return id;
     }
     @PostMapping(path = "/login")
     public ResponseEntity<?> loginPatient(@RequestBody LoginDTO loginDTO)
@@ -36,9 +36,19 @@ public class PatientController {
     }
 
     @PostMapping(path = "/logout")
-    public ResponseEntity<String> logoutUser() {
+    public ResponseEntity<String> logoutPatient() {
         session.invalidate(); // Invalidate session upon logout
         return ResponseEntity.ok("Logout Successful");
+    }
+
+    @GetMapping(path = "/current-patient-id")
+    public ResponseEntity<Integer> getCurrentPatientId() {
+        Patient loggedInPatient = (Patient) session.getAttribute("loggedInPatient");
+        if (loggedInPatient != null) {
+            return ResponseEntity.ok(loggedInPatient.getPatientid());
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @PutMapping(path = "/update")
@@ -63,6 +73,25 @@ public class PatientController {
 
         } else {
             return ResponseEntity.badRequest().body("Patient not logged in or unauthorized to perform this action");
+        }
+    }
+
+
+
+    @GetMapping(path = "/details")
+    public ResponseEntity<Patient> getLoggedInPatientDetails() {
+        Patient loggedInPatient = patientService.getLoggedInPatientDetails();
+        return ResponseEntity.ok(loggedInPatient);
+    }
+
+
+    @GetMapping(path = "/patient-details")
+    public ResponseEntity<Patient> getPatientDetailsById(@RequestParam int patientId) {
+        Patient patient = patientService.getPatientDetailsById(patientId);
+        if (patient != null) {
+            return ResponseEntity.ok(patient);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 

@@ -81,5 +81,14 @@ public class UserService {
             userRepo.delete(loggedInUser);
     }
 
+    public User getLoggedInUserDetails() {
+        HttpSession session = request.getSession(true);
+        return (User) session.getAttribute("loggedInUser");
+    }
+
+    public User getUserDetailsById(int userId) {
+        return userRepo.findById(userId).orElse(null);
+    }
+
 
 }

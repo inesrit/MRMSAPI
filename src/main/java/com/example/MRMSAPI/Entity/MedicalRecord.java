@@ -2,11 +2,9 @@ package com.example.MRMSAPI.Entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name="medicalrecords")
-public class MedicalRecords {
+@Table(name="medicalrecord")
+public class MedicalRecord {
 
     @Id
     @Column(name = "medicalrecord_id", length = 45)
@@ -25,8 +23,9 @@ public class MedicalRecords {
     @Column(name = "record_type", length = 255)
     private String recordType;
 
-    @Column(name = "provider", length = 255)
-    private String provider;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user; // Added User association
 
     @Column(name = "record_result", length = 255)
     private String recordResult;

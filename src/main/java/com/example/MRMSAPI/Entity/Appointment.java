@@ -18,8 +18,9 @@ public class Appointment {
     @Column(name = "visit_type", length = 255)
     private String visitType;
 
-    @Column(name = "provider", length = 255)
-    private String provider;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user; // Added User association
 
     @Column(name = "app_location", length = 255)
     private String appLocation;
