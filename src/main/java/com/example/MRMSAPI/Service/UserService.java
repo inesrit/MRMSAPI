@@ -1,8 +1,10 @@
 package com.example.MRMSAPI.Service;
 
 import com.example.MRMSAPI.Dto.LoginDTO;
+import com.example.MRMSAPI.Entity.MedicalRecord;
 import com.example.MRMSAPI.Entity.Patient;
 import com.example.MRMSAPI.Entity.User;
+import com.example.MRMSAPI.Repo.MedicalRecordRepo;
 import com.example.MRMSAPI.Repo.UserRepo;
 import com.example.MRMSAPI.response.LoginResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +21,8 @@ import java.util.Optional;
 public class UserService {
 
     private List<Patient> patients = new ArrayList<>();
-    //patients.add(patient);
+
+    private List<MedicalRecord> medicalrecord = new ArrayList<>();
 
     @Autowired
     private UserRepo userRepo;
@@ -39,7 +42,8 @@ public class UserService {
                 this.passwordEncoder.encode(user.getPassword()),
                 user.getLocation(),
                 user.getContactNumber(),
-                patients
+                patients,
+                medicalrecord
         );
 
         userRepo.save(user1);
@@ -109,5 +113,9 @@ public class UserService {
         patients.remove(patient);
         user.setPatients(patients);
         userRepo.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
     }
 }

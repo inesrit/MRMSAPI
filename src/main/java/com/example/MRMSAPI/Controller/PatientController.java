@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("api/v1/patient")
@@ -96,5 +98,9 @@ public class PatientController {
     }
 
 
-    //TODO create method to get all patients
+    @GetMapping("/all")
+    public ResponseEntity<List<Patient>> getAllPatients() {
+        List<Patient> patients = patientService.getAllPatients();
+        return ResponseEntity.ok(patients);
+    }
 }

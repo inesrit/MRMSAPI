@@ -32,6 +32,8 @@ public class AccessRequestController {
     @Autowired
     private HttpSession session;
 
+    //method that creates a new access request
+    //can only be performed by the logged-in user requesting access
     @PostMapping(path = "/create")
     public ResponseEntity<AccessRequest> createAccessRequest(@RequestParam int patientId) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -40,18 +42,22 @@ public class AccessRequestController {
         return ResponseEntity.ok(request);
     }
 
+    //method that updates the status of a specific access request
+    //can only be performed by the patient
     @PutMapping(path = "/update-status")
     public ResponseEntity<String> updateRequestStatus(@RequestParam Long requestId, @RequestParam RequestStatus status) {
         accessRequestService.updateRequestStatus(requestId, status);
         return ResponseEntity.ok("Request status updated successfully");
     }
 
+    //method that deletes a specific access request
     @DeleteMapping(path = "/revoke-access")
     public ResponseEntity<String> revokeAccess(@RequestParam Long requestId) {
         accessRequestService.revokeAccess(requestId);
         return ResponseEntity.ok("Request deleted successfully");
     }
 
+    //method that gets all requests of  specific patient
     @GetMapping(path = "/all-patient-requests")
     public ResponseEntity<List<AccessRequest>> getAllPatientRequests() {
         List<AccessRequest> accessRequests = accessRequestService.getAllPatientRequests();
@@ -59,6 +65,7 @@ public class AccessRequestController {
     }
 
 
+    //method that gets a specific ID request details
     @GetMapping(path = "/request-details")
     public ResponseEntity<AccessRequest> getRequestById(@RequestParam Long requestId) {
         AccessRequest accessRequest = accessRequestService.getRequestById(requestId);

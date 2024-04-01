@@ -1,9 +1,10 @@
 package com.example.MRMSAPI.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name="patient")
@@ -53,7 +54,11 @@ public class Patient {
     )
     private List<User> users;
 
-    public Patient(int patientid, String patientName, String email, String password, String address, String contactNumber, String birthDate, int weight, int height, String healthcareId, String emergencyContactName, int emergencyContactNumber, List<User> users) {
+    @JsonIgnore
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<MedicalRecord> medicalRecords = new ArrayList<>();
+
+    public Patient(int patientid, String patientName, String email, String password, String address, String contactNumber, String birthDate, int weight, int height, String healthcareId, String emergencyContactName, int emergencyContactNumber, List<User> users, List<MedicalRecord> medicalRecords) {
         this.patientid = patientid;
         this.patientName = patientName;
         this.email = email;
@@ -67,6 +72,7 @@ public class Patient {
         this.emergencyContactName = emergencyContactName;
         this.emergencyContactNumber = emergencyContactNumber;
         this.users = users;
+        this.medicalRecords = medicalRecords;
     }
 
     public Patient() {
@@ -177,6 +183,14 @@ public class Patient {
         this.users = user;
     }
 
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
+
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
@@ -192,7 +206,8 @@ public class Patient {
                 ", healthcareId='" + healthcareId + '\'' +
                 ", emergencyContactName='" + emergencyContactName + '\'' +
                 ", emergencyContactNumber=" + emergencyContactNumber +
-                ", user=" + users +
+                ", users=" + users +
+                ", medicalRecords=" + medicalRecords +
                 '}';
     }
 }

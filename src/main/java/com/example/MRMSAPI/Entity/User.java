@@ -3,7 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import com.example.MRMSAPI.Entity.Patient;
 
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name="user")
@@ -33,11 +33,15 @@ public class User {
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<Patient> patients;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<MedicalRecord> medicalRecords = new ArrayList<>();
+
 
     public User() {
     }
 
-    public User(int userid, String username, String email, String password, String location, String contactNumber, List<Patient> patients) {
+    public User(int userid, String username, String email, String password, String location, String contactNumber, List<Patient> patients, List<MedicalRecord> medicalRecords) {
         this.userid = userid;
         this.username = username;
         this.email = email;
@@ -45,6 +49,7 @@ public class User {
         this.location = location;
         this.contactNumber = contactNumber;
         this.patients = patients;
+        this.medicalRecords = medicalRecords;
     }
 
     public int getUserid() {
@@ -103,6 +108,14 @@ public class User {
         this.patients = patients;
     }
 
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
+
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -113,6 +126,7 @@ public class User {
                 ", location='" + location + '\'' +
                 ", contactNumber='" + contactNumber + '\'' +
                 ", patients=" + patients +
+                ", medicalRecords=" + medicalRecords +
                 '}';
     }
 }
