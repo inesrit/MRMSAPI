@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
  */
 function Signup() {
 
-  const [username, setNname] = useState("");
+  const [patientName, setPatientName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
@@ -19,7 +19,6 @@ function Signup() {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [healthid, setHealthid] = useState("");
-  const [provider, setProvider] = useState("");
   const [emergencycontactname, setEmergencycontactname] = useState("");
   const [emergencycontactnumber, setEmergencycontactnumber] = useState("");
 
@@ -29,10 +28,18 @@ function Signup() {
   async function save(event) {
       event.preventDefault();
       try {
-        await axios.post("http://localhost:8080/api/v1/user/save", {
-        username: username,
+        await axios.post("http://localhost:8080/api/v1/patient/save", {
+        patientName: patientName,
         email: email,
         password: password,
+        address: address,
+        contactNumber: contactnumber,
+        birthDate: birthdate,
+        weight: weight,
+        height: height,
+        healthcareId: healthid,
+        emergencyContactName: emergencycontactname,
+        emergencyContactNumber: emergencycontactnumber
         });
         alert("User Registation Successfull");
         navigate('/signin');
@@ -70,7 +77,7 @@ function Signup() {
       <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                  If you are a Healthcare provider, please  <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500">contact us</a>
+                  If you are a Healthcare provider, please  <a href="/hpsignup" class="font-medium text-primary-600 hover:underline dark:text-primary-500">use this link</a>
 
                   </p>
               <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -80,9 +87,9 @@ function Signup() {
               <div>
                       <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Name</label>
                       <input type="email" name="email" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Jane" required=""
-                      value={username}
+                      value={patientName}
                       onChange={(event) => {
-                        setName(event.target.value);
+                        setPatientName(event.target.value);
                       }}
                       />
                   </div>
@@ -157,15 +164,6 @@ function Signup() {
                       value={healthid}
                       onChange={(event) => {
                         setHealthid(event.target.value);
-                      }}
-                      />
-                  </div>
-                  <div>
-                      <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Provider</label>
-                      <input type="email" name="email" id="provider" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required=""
-                      value={provider}
-                      onChange={(event) => {
-                        setProvider(event.target.value);
                       }}
                       />
                   </div>

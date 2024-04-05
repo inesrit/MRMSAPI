@@ -59,10 +59,8 @@ public class MedicalRecordService {
             // Handle case where the medical record with the specified ID does not exist
             throw new EntityNotFoundException("Medical record with ID " + medicalRecordId + " not found");
         } catch (Exception e) {
-            // Handle other unexpected exceptions
-            // Log the exception for debugging purposes
+
             e.printStackTrace();
-            // You can choose to rethrow the exception or handle it in a different way based on your application's requirements
             throw new RuntimeException("Failed to delete medical record");
         }
     }

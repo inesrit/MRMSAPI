@@ -20,7 +20,7 @@ function Signin() {
   async function login(event) {
       event.preventDefault();
       try {
-        await axios.post("http://localhost:8080/api/v1/user/login", {
+        await axios.post("http://localhost:8080/api/v1/patient/login", {
           email: email,
           password: password,
           }).then((res) => 

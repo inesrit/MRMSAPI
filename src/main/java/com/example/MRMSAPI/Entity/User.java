@@ -37,11 +37,15 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<MedicalRecord> medicalRecords = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Prescription> prescriptions = new ArrayList<>();
+
 
     public User() {
     }
 
-    public User(int userid, String username, String email, String password, String location, String contactNumber, List<Patient> patients, List<MedicalRecord> medicalRecords) {
+    public User(int userid, String username, String email, String password, String location, String contactNumber, List<Patient> patients, List<MedicalRecord> medicalRecords, List<Prescription> prescriptions) {
         this.userid = userid;
         this.username = username;
         this.email = email;
@@ -50,6 +54,7 @@ public class User {
         this.contactNumber = contactNumber;
         this.patients = patients;
         this.medicalRecords = medicalRecords;
+        this.prescriptions = prescriptions;
     }
 
     public int getUserid() {
@@ -116,6 +121,14 @@ public class User {
         this.medicalRecords = medicalRecords;
     }
 
+    public List<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(List<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -127,6 +140,7 @@ public class User {
                 ", contactNumber='" + contactNumber + '\'' +
                 ", patients=" + patients +
                 ", medicalRecords=" + medicalRecords +
+                ", prescriptions=" + prescriptions +
                 '}';
     }
 }

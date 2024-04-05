@@ -58,7 +58,12 @@ public class Patient {
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<MedicalRecord> medicalRecords = new ArrayList<>();
 
-    public Patient(int patientid, String patientName, String email, String password, String address, String contactNumber, String birthDate, int weight, int height, String healthcareId, String emergencyContactName, int emergencyContactNumber, List<User> users, List<MedicalRecord> medicalRecords) {
+    @JsonIgnore
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Prescription> prescriptions = new ArrayList<>();
+
+
+    public Patient(int patientid, String patientName, String email, String password, String address, String contactNumber, String birthDate, int weight, int height, String healthcareId, String emergencyContactName, int emergencyContactNumber, List<User> users, List<MedicalRecord> medicalRecords, List<Prescription> prescriptions) {
         this.patientid = patientid;
         this.patientName = patientName;
         this.email = email;
@@ -73,6 +78,7 @@ public class Patient {
         this.emergencyContactNumber = emergencyContactNumber;
         this.users = users;
         this.medicalRecords = medicalRecords;
+        this.prescriptions = prescriptions;
     }
 
     public Patient() {
@@ -191,6 +197,15 @@ public class Patient {
         this.medicalRecords = medicalRecords;
     }
 
+
+    public List<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(List<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
@@ -208,6 +223,7 @@ public class Patient {
                 ", emergencyContactNumber=" + emergencyContactNumber +
                 ", users=" + users +
                 ", medicalRecords=" + medicalRecords +
+                ", prescriptions=" + prescriptions +
                 '}';
     }
 }
