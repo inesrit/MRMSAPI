@@ -88,4 +88,12 @@ public class PrescriptionController {
         return ResponseEntity.ok().body(patientPrescriptions);
     }
 
+    @GetMapping("/all-user-prescriptions")
+    public ResponseEntity<List<Prescription>> getAllPrescriptionsByUserId(@RequestParam int userId) {
+        List<Prescription> userPrescriptions = prescriptionService.getAllPrescriptionsByUserId(userId);
+        return ResponseEntity.ok().body(userPrescriptions);
+    }
+
+
+
 }

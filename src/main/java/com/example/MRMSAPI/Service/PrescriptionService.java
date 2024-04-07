@@ -93,4 +93,8 @@ public class PrescriptionService {
         return prescriptionRepo.findAllByPatient_Patientid(patientId);
     }
 
+    public List<Prescription> getAllPrescriptionsByUserId(int userId) {
+        return prescriptionRepo.findAllByUser_Userid(userId);
+    }
+
 }

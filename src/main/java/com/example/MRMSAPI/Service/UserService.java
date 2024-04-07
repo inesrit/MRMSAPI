@@ -1,10 +1,7 @@
 package com.example.MRMSAPI.Service;
 
 import com.example.MRMSAPI.Dto.LoginDTO;
-import com.example.MRMSAPI.Entity.MedicalRecord;
-import com.example.MRMSAPI.Entity.Patient;
-import com.example.MRMSAPI.Entity.Prescription;
-import com.example.MRMSAPI.Entity.User;
+import com.example.MRMSAPI.Entity.*;
 import com.example.MRMSAPI.Repo.MedicalRecordRepo;
 import com.example.MRMSAPI.Repo.UserRepo;
 import com.example.MRMSAPI.response.LoginResponse;
@@ -27,6 +24,8 @@ public class UserService {
 
     private List<Prescription> prescriptions = new ArrayList<>();
 
+    private List<Appointment> appointments = new ArrayList<>();
+
     @Autowired
     private UserRepo userRepo;
 
@@ -47,7 +46,8 @@ public class UserService {
                 user.getContactNumber(),
                 patients,
                 medicalrecord,
-                prescriptions
+                prescriptions,
+                appointments
         );
 
         userRepo.save(user1);

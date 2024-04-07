@@ -5,6 +5,8 @@ import com.example.MRMSAPI.Entity.MedicalRecord;
 import com.example.MRMSAPI.Entity.Patient;
 import com.example.MRMSAPI.Entity.Prescription;
 import com.example.MRMSAPI.Entity.User;
+import com.example.MRMSAPI.Entity.Appointment;
+import com.example.MRMSAPI.Repo.AppointmentRepo;
 import com.example.MRMSAPI.Repo.PatientRepo;
 import com.example.MRMSAPI.response.LoginResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +27,8 @@ public class PatientService {
     private List<MedicalRecord> medicalrecord = new ArrayList<>();
 
     private List<Prescription> prescriptions = new ArrayList<>();
+
+    private List<Appointment> appointments = new ArrayList<>();
 
     @Autowired
     private PatientRepo patientRepo;
@@ -52,7 +56,8 @@ public class PatientService {
                 patient.getEmergencyContactNumber(),
                 user,
                 medicalrecord,
-                prescriptions
+                prescriptions,
+                appointments
 
         );
 

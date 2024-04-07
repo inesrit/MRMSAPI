@@ -1,6 +1,5 @@
 package com.example.MRMSAPI.Repo;
 
-
 import com.example.MRMSAPI.Entity.Appointment;
 import com.example.MRMSAPI.Entity.MedicalRecord;
 import com.example.MRMSAPI.Entity.Patient;
@@ -13,19 +12,22 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @EnableJpaRepositories
 @Repository
-public interface PrescriptionRepo  extends JpaRepository<Prescription, Integer>{
+public interface AppointmentRepo  extends JpaRepository<Appointment, Integer> {
 
-    List<Prescription> findAllByPatient_Patientid(int patientId);
+    List<Appointment> findAllByPatient_Patientid(int patientId);
 
-    List<Prescription> findAllByUser_Userid(int userId);
+    List<Appointment> findAllByUser_Userid(int userId);
+
+    List<Appointment> findAllByUser_UseridAndAppDate(int userId, LocalDate appDate);
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM Prescription m WHERE m.prescriptionid = :prescriptionId")
-    void deleteByPrescriptionId(@Param("prescriptionId") int prescriptionId);
+    @Query("DELETE FROM Appointment m WHERE m.appointmentid = :appointmentId")
+    void deleteByAppointmentId(@Param("appointmentId") int appointmentId);
 
 }
