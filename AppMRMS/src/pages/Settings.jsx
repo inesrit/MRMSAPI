@@ -1,214 +1,227 @@
-/**
- * Home page
- * 
- * This is the main landing page for the application
- * 
- * @author Ines Rita
- */
-
-import Pic from './../assets/Medical-health-logo-design-on-transparent-background-PNG.png'
-import Navbar from './../components/Navbar'
-
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Navbar from './../components/Navbar';
 function Settings() {
+    // Initial state with all fields initialized to avoid undefined values
+    const [patientDetails, setPatientDetails] = useState({
+        patientName: "",
+        email: "",
+        password: "",
+        address: "",
+        contactNumber: "",
+        birthDate: "",  // Use null for date input if initial value should represent no selection
+        weight: "",
+        height: "",
+        healthcareId: "",
+        emergencyContactName: "",
+        emergencyContactNumber: "",
+    });
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function fetchPatientDetails() {
+            try {
+                const response = await axios.get('http://localhost:8080/api/v1/patient/details', {
+                    withCredentials: true
+                });
+                const patientData = response.data;
+                console.log(response.data)
+                setPatientDetails({
+                    ...patientDetails,
+                    ...Object.keys(patientDetails).reduce((acc, key) => {
+                        acc[key] = patientData[key] || "";
+                        return acc;
+                    }, {})
+                });
+            } catch (err) {
+                console.error("Error fetching patient details:", err);
+            }
+        }
+        fetchPatientDetails();
+    }, []);
+
+    async function saveDetails(event) {
+        console.log(patientDetails);
+        event.preventDefault();
+        try {
+            const response = await axios.put("http://localhost:8080/api/v1/patient/update", patientDetails, {
+                    withCredentials: true
+                });
+            alert("Details Updated Successfully");
+            navigate('/settings');
+        } catch (err) {
+            alert(err.message);
+        }
+    }
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setPatientDetails(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    async function deleteAccount() {
+        try {
+            
+            const response = await axios.delete('http://localhost:8080/api/v1/patient/delete', {
+                withCredentials: true
+            });
+            navigate('/signin');
+        } catch (err) {
+            console.error("Error deleting account:", err);
+            alert("An error occurred while deleting the account");
+        }
+    }
+
     return (
         <>
- 
- 
- <Navbar />
-
-
-
-<div class="p-4 sm:ml-64">
-
-
-
-
-<div class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
-    <div class="mb-4 col-span-full xl:mb-2">
-        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">User settings</h1>
-    </div>
-    {/* <!-- Right Content --> */}
-    <div class="col-span-full xl:col-auto">
-        <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-            <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4">
-                <img class="mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0" src="/images/users/bonnie-green-2x.png" alt="profile picture"/>
-                <div>
-                    <h3 class="mb-1 text-xl font-bold text-gray-900 dark:text-white">Profile picture</h3>
-                    <div class="mb-4 text-sm text-gray-500 dark:text-gray-400">
-                        JPG, GIF or PNG. Max size of 800K
+            <Navbar />
+            <div className="p-4 sm:ml-64">
+                <div className="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
+                    <div className="mb-4 col-span-full xl:mb-2">
+                        <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Patient Profile Settings</h1>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            <svg class="w-4 h-4 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"></path><path d="M9 13h2v5a1 1 0 11-2 0v-5z"></path></svg>
-                            Upload picture
-                        </button>
-                        <button type="button" class="py-2 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-            <h3 class="mb-4 text-xl font-semibold dark:text-white">Language & Time</h3>
-            <div class="mb-4">
-                <label for="settings-language" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select language</label>
-                <select id="settings-language" name="countries" class="bg-gray-50 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                    <option>English (US)</option>
-                    <option>Italiano</option>
-                    <option>Français (France)</option>
-                    <option>正體字</option>
-                    <option>Español (España)</option>
-                    <option>Deutsch</option>
-                    <option>Português (Brasil)</option>
-                </select>
-            </div>
-            <div class="mb-6">
-                <label for="settings-timezone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Time Zone</label>
-                <select id="settings-timezone" name="countries" class="bg-gray-50 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                    <option>GMT+0 Greenwich Mean Time (GMT)</option>
-                    <option>GMT+1 Central European Time (CET)</option>
-                    <option>GMT+2 Eastern European Time (EET)</option>
-                    <option>GMT+3 Moscow Time (MSK)</option>
-                    <option>GMT+5 Pakistan Standard Time (PKT)</option>
-                    <option>GMT+8 China Standard Time (CST)</option>
-                    <option>GMT+10 Eastern Australia Standard Time (AEST)</option>
-                </select>
-            </div>
-            <div>
-                <button class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save all</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-span-2">
-        <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-            <h3 class="mb-4 text-xl font-semibold dark:text-white">General information</h3>
-            <form action="#">
-                <div class="grid grid-cols-6 gap-6">
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="first-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                        <input type="text" name="first-name" id="first-name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Bonnie" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="last-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                        <input type="text" name="last-name" id="last-name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Green" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="country" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                        <input type="text" name="country" id="country" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="United States" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
-                        <input type="text" name="city" id="city" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="e.g. San Francisco" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                        <input type="text" name="address" id="address" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="e.g. California" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                        <input type="email" name="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="example@company.com" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="phone-number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-                        <input type="number" name="phone-number" id="phone-number" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="e.g. +(12)3456 789" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="birthday" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthday</label>
-                        <input type="number" name="birthday" id="birthday" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="15/08/1990" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="organization" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization</label>
-                        <input type="text" name="organization" id="organization" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Company Name" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                        <input type="text" name="role" id="role" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="React Developer" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="department" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
-                        <input type="text" name="department" id="department" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Development" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="zip-code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip/postal code</label>
-                        <input type="number" name="zip-code" id="zip-code" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123456" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-full">
-                        <button class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="submit">Save all</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-            <h3 class="mb-4 text-xl font-semibold dark:text-white">Password information</h3>
-            <form action="#">
-                <div class="grid grid-cols-6 gap-6">
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="current-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current password</label>
-                        <input type="text" name="current-password" id="current-password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="••••••••" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New password</label>
-                        <input data-popover-target="popover-password" data-popover-placement="bottom" type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="••••••••" required/>
-                        <div data-popover id="popover-password" role="tooltip" class="absolute z-10 invisible inline-block text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
-                            <div class="p-3 space-y-2">
-                                <h3 class="font-semibold text-gray-900 dark:text-white">Must have at least 6 characters</h3>
-                                <div class="grid grid-cols-4 gap-2">
-                                    <div class="h-1 bg-orange-300 dark:bg-orange-400"></div>
-                                    <div class="h-1 bg-orange-300 dark:bg-orange-400"></div>
-                                    <div class="h-1 bg-gray-200 dark:bg-gray-600"></div>
-                                    <div class="h-1 bg-gray-200 dark:bg-gray-600"></div>
+                    <div className="col-span-2">
+                        <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                            <h3 className="mb-4 text-xl font-semibold dark:text-white">General Information</h3>
+                            <form onSubmit={saveDetails}>
+                                <div className="grid grid-cols-6 gap-6">
+                                    { /* Each input field */ }
+                                    <InputField
+                                        id="patientName"
+                                        name="patientName"
+                                        label="Name"
+                                        type="text"
+                                        placeholder="Full Name"
+                                        value={patientDetails.patientName}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="email"
+                                        name="email"
+                                        label="Email"
+                                        type="email"
+                                        placeholder="example@company.com"
+                                        value={patientDetails.email}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="password"
+                                        name="password"
+                                        label="New Password"
+                                        type="password"
+                                        placeholder="••••••••"
+                                        value={patientDetails.password}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="address"
+                                        name="address"
+                                        label="Address"
+                                        type="text"
+                                        placeholder="123 Main St"
+                                        value={patientDetails.address}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="contactNumber"
+                                        name="contactNumber"
+                                        label="Phone Number"
+                                        type="text"
+                                        placeholder="555-1234"
+                                        value={patientDetails.contactNumber}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="birthDate"
+                                        name="birthDate"
+                                        label="Birthdate"
+                                        type="date"  // Changed to 'date' for proper date input
+                                        value={patientDetails.birthDate}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="weight"
+                                        name="weight"
+                                        label="Weight"
+                                        type="text"
+                                        placeholder="e.g., 70 kg"
+                                        value={patientDetails.weight}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="height"
+                                        name="height"
+                                        label="Height"
+                                        type="text"
+                                        placeholder="e.g., 180 cm"
+                                        value={patientDetails.height}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="healthcareId"
+                                        name="healthcareId"
+                                        label="Healthcare ID"
+                                        type="text"
+                                        placeholder="e.g., 123456789"
+                                        value={patientDetails.healthcareId}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="emergencyContactName"
+                                        name="emergencyContactName"
+                                        label="Emergency Contact Name"
+                                        type="text"
+                                        placeholder="Jane Doe"
+                                        value={patientDetails.emergencyContactName}
+                                        onChange={handleChange}
+                                    />
+                                    <InputField
+                                        id="emergencyContactNumber"
+                                        name="emergencyContactNumber"
+                                        label="Emergency Contact Number"
+                                        type="text"
+                                        placeholder="555-4321"
+                                        value={patientDetails.emergencyContactNumber}
+                                        onChange={handleChange}
+                                    />
+                                    <div className="col-span-6 sm:col-span-full">
+                                        <button type="submit" className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save all</button>
+                                    </div>
+                                    <div class="col-span-6 sm:col-full">
+                                     <button class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={deleteAccount}>Delete Account</button>
+                                     </div>
                                 </div>
-                                <p>It’s better to have:</p>
-                                <ul>
-                                    <li class="flex items-center mb-1">
-                                        <svg class="w-4 h-4 mr-2 text-green-400 dark:text-green-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                                        Upper & lower case letters
-                                    </li>
-                                    <li class="flex items-center mb-1">
-                                        <svg class="w-4 h-4 mr-2 text-gray-300 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                        A symbol (#$&)
-                                    </li>
-                                    <li class="flex items-center">
-                                        <svg class="w-4 h-4 mr-2 text-gray-300 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                        A longer password (min. 12 chars.)
-                                    </li>
-                                </ul>
+                            </form>
                         </div>
-                        <div data-popper-arrow></div>
-                        </div>
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-                        <input type="text" name="confirm-password" id="confirm-password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="••••••••" required/>
-                    </div>
-                    <div class="col-span-6 sm:col-full">
-                        <button class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="submit">Save all</button>
                     </div>
                 </div>
-            </form>
-        </div>
-   
-    </div>
-    
-</div>
-
-
-
-
-
-
-
-
-
-</div>
-
-
- 
- 
+            </div>
         </>
-    )
+    );
 }
- 
-export default Settings
- 
+
+
+function InputField({ id, name, label, type, placeholder, value, onChange }) {
+    return (
+        <div className="col-span-6 sm:col-span-3">
+            <label htmlFor={id} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}</label>
+            <input
+                type={type}
+                id={id}
+                name={name}
+                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder={placeholder}
+                required
+                value={value}
+                onChange={onChange}
+            />
+        </div>
+    );
+}
+
+export default Settings;

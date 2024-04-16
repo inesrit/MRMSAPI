@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("api/v1/patient")
 public class PatientController {
 
@@ -88,8 +88,8 @@ public class PatientController {
 
 
     @GetMapping(path = "/patient-details")
-    public ResponseEntity<Patient> getPatientDetailsById(@RequestParam int patientId) {
-        Patient patient = patientService.getPatientDetailsById(patientId);
+    public ResponseEntity<Patient> getPatientDetailsById(@CookieValue(name = "patient", defaultValue = "defaultPatient") String patientId) {
+        Patient patient = patientService.getPatientDetailsById(Integer.valueOf(patientId));
         if (patient != null) {
             return ResponseEntity.ok(patient);
         } else {

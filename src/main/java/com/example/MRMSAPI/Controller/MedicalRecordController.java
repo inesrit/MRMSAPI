@@ -9,6 +9,7 @@ import com.example.MRMSAPI.Service.AccessRequestService;
 import com.example.MRMSAPI.Service.PatientService;
 import com.example.MRMSAPI.Service.MedicalRecordService;
 import com.example.MRMSAPI.Entity.User;
+import com.example.MRMSAPI.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 //import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("api/v1/medical-record")
 public class MedicalRecordController {
 
@@ -30,11 +31,15 @@ public class MedicalRecordController {
     private PatientService patientService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private HttpSession session;
 
     @PostMapping("/create")
     public ResponseEntity<String> createMedicalRecord(@RequestBody Map<String, Object> requestBody) {
         int patientId = (int) requestBody.get("patientId");
+        int userId = (int) requestBody.get("userId");
         String recordDate = (String) requestBody.get("recordDate");
         String recordName = (String) requestBody.get("recordName");
         String recordType = (String) requestBody.get("recordType");
@@ -44,11 +49,11 @@ public class MedicalRecordController {
         if (patient == null) {
             return ResponseEntity.badRequest().body("Patient with ID " + patientId + " not found");
         }
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
+        User user = userService.getUserDetailsById(userId);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("User with ID " + userId + " not found");
         }
-        MedicalRecord newMedicalRecord = medicalRecordService.createMedicalRecord(patient, loggedInUser, recordDate, recordName, recordType, recordResult);
+        MedicalRecord newMedicalRecord = medicalRecordService.createMedicalRecord(patient, user, recordDate, recordName, recordType, recordResult);
         return ResponseEntity.ok().body("Medical record created successfully");
     }
 

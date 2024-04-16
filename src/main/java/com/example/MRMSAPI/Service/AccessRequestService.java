@@ -81,10 +81,8 @@ public class AccessRequestService {
     }
 
 
-    public List<AccessRequest> getAllPatientRequests() {
-        HttpSession session = request.getSession(true);
-        Patient loggedInPatient = (Patient) session.getAttribute("loggedInPatient");
-        return accessRequestRepository.findAllByPatient(loggedInPatient);
+    public List<AccessRequest> getAllPatientRequests(Patient patient) {
+        return accessRequestRepository.findAllByPatient(patient);
     }
     public AccessRequest getRequestById(Long requestId) {
         return accessRequestRepository.findById(requestId).orElse(null);

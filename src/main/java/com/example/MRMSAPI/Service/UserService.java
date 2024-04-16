@@ -67,7 +67,7 @@ public class UserService {
                 if (user.isPresent()) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("loggedInUser", user1);
-                    return new LoginResponse("Login Successful", true);
+                    return new LoginResponse("Login Successful", true, user1);
                 } else {
                     return new LoginResponse("Login Failed", false);
                 }

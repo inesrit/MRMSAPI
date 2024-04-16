@@ -14,7 +14,7 @@ import java.time.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("api/v1/appointment")
 public class AppointmentController {
 
@@ -64,10 +64,6 @@ public class AppointmentController {
     }
 
     private boolean isValidAppointmentTime(String appTime) {
-        // Add validation logic here, e.g., check if the time is within working hours
-        // For simplicity, assuming valid time format HH:MM and checking if it's between 9am and 5pm
-        // You can adjust this validation as per your requirements
-        // Example:
         return appTime.matches("^(0[9]|1[0-6]):[0-5][0-9]$");
     }
 

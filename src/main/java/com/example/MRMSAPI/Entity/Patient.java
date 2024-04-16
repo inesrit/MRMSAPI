@@ -42,7 +42,7 @@ public class Patient {
     private String emergencyContactName;
 
     @Column(name = "emergency_contact_number", length = 255)
-    private int emergencyContactNumber;
+    private String emergencyContactNumber;
 
 
     @ManyToMany
@@ -67,7 +67,7 @@ public class Patient {
     private List<Appointment> appointments = new ArrayList<>();
 
 
-    public Patient(int patientid, String patientName, String email, String password, String address, String contactNumber, String birthDate, int weight, int height, String healthcareId, String emergencyContactName, int emergencyContactNumber, List<User> users, List<MedicalRecord> medicalRecords, List<Prescription> prescriptions, List<Appointment> appointments) {
+    public Patient(int patientid, String patientName, String email, String password, String address, String contactNumber, String birthDate, int weight, int height, String healthcareId, String emergencyContactName, String emergencyContactNumber, List<User> users, List<MedicalRecord> medicalRecords, List<Prescription> prescriptions, List<Appointment> appointments) {
         this.patientid = patientid;
         this.patientName = patientName;
         this.email = email;
@@ -177,12 +177,12 @@ public class Patient {
         this.emergencyContactName = emergencyContactName;
     }
 
-    public int getEmergencyContactNumber() {
+    public String getEmergencyContactNumber() {
         return emergencyContactNumber;
     }
 
 
-    public void setEmergencyContactNumber(int emergencyContactNumber) {
+    public void setEmergencyContactNumber(String emergencyContactNumber) {
         this.emergencyContactNumber = emergencyContactNumber;
     }
 

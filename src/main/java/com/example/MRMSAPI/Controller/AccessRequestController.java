@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("api/v1/access-requests")
 public class AccessRequestController {
 
@@ -35,10 +35,10 @@ public class AccessRequestController {
     //method that creates a new access request
     //can only be performed by the logged-in user requesting access
     @PostMapping(path = "/create")
-    public ResponseEntity<AccessRequest> createAccessRequest(@RequestParam int patientId) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
+    public ResponseEntity<AccessRequest> createAccessRequest(@RequestParam int userId, @RequestParam int patientId) {
+        User user = userService.getUserDetailsById(userId);
         Patient patient = patientService.getPatientDetailsById(patientId);
-        AccessRequest request = accessRequestService.createAccessRequest(loggedInUser, patient);
+        AccessRequest request = accessRequestService.createAccessRequest(user, patient);
         return ResponseEntity.ok(request);
     }
 
@@ -59,8 +59,9 @@ public class AccessRequestController {
 
     //method that gets all requests of  specific patient
     @GetMapping(path = "/all-patient-requests")
-    public ResponseEntity<List<AccessRequest>> getAllPatientRequests() {
-        List<AccessRequest> accessRequests = accessRequestService.getAllPatientRequests();
+    public ResponseEntity<List<AccessRequest>> getAllPatientRequests(@RequestParam int patientId) {
+        Patient patient = patientService.getPatientDetailsById(patientId);
+        List<AccessRequest> accessRequests = accessRequestService.getAllPatientRequests(patient);
         return ResponseEntity.ok(accessRequests);
     }
 

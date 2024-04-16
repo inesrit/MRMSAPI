@@ -9,7 +9,9 @@ import com.example.MRMSAPI.Entity.Appointment;
 import com.example.MRMSAPI.Repo.AppointmentRepo;
 import com.example.MRMSAPI.Repo.PatientRepo;
 import com.example.MRMSAPI.response.LoginResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +40,9 @@ public class PatientService {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    HttpServletResponse response;
 
     public String addPatient(Patient patient) {
 
@@ -78,6 +83,10 @@ public class PatientService {
                 if (patient.isPresent()) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("loggedInPatient", patient1);
+                    Cookie cookiepatient = new Cookie("patient", String.valueOf(patient1.getPatientid()));
+                    cookiepatient.setHttpOnly(true);
+                    cookiepatient.setSecure(false);
+                    response.addCookie(cookiepatient);
                     return new LoginResponse("Login Successful", true);
                 } else {
                     return new LoginResponse("Login Failed", false);

@@ -99,7 +99,7 @@ public class AppointmentService {
     public boolean hasAppointmentOverlap(List<Appointment> appointments, String newAppDate, String newAppTime) {
         // Convert newAppTime string to LocalTime
         LocalTime newStartTime = LocalTime.parse(newAppTime);
-        LocalTime newEndTime = newStartTime.plusHours(2); // Assuming each appointment is 2 hours
+        LocalTime newEndTime = newStartTime.plusHours(2);
 
         // Convert newAppDate string to LocalDate
         LocalDate newDate = LocalDate.parse(newAppDate);
@@ -108,7 +108,7 @@ public class AppointmentService {
         for (Appointment appointment : appointments) {
             // Convert existing appointment time string to LocalTime
             LocalTime existingStartTime = appointment.getAppTime();
-            LocalTime existingEndTime = existingStartTime.plusHours(2); // Assuming each appointment is 2 hours
+            LocalTime existingEndTime = existingStartTime.plusHours(2);
 
             // Convert existing appointment date string to LocalDate
             LocalDate existingDate = appointment.getAppDate();
@@ -118,7 +118,6 @@ public class AppointmentService {
                 // Check for time overlap
                 if ((newStartTime.isBefore(existingEndTime) && newEndTime.isAfter(existingStartTime)) ||
                         (existingStartTime.isBefore(newEndTime) && existingEndTime.isAfter(newStartTime))) {
-                    // Overlap found
                     return true;
                 }
             }
