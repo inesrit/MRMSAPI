@@ -7,7 +7,7 @@
  */
 
 import Pic from './../assets/Medical-health-logo-design-on-transparent-background-PNG.png'
-import Navbar from './../components/HPNavbar'
+import Navbar from './../components/Navbar'
 
 function Prescriptions() {
     return (

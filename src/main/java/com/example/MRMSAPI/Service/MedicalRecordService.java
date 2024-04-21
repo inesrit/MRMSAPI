@@ -77,4 +77,8 @@ public class MedicalRecordService {
     public List<MedicalRecord> getAllMedicalRecordsByPatientId(int patientId) {
         return medicalRecordRepo.findAllByPatient_Patientid(patientId);
     }
+
+    public List<MedicalRecord> getAllMedicalRecordsByUserId(int userId) {
+        return medicalRecordRepo.findAllByUser_Userid(userId);
+    }
 }

@@ -5,14 +5,20 @@ import HPSignin from './pages/HPSignin'
 import Patientdashboard from './pages/Patientdashboard.jsx'
 import HPdashboard from './pages/HPdashboard.jsx'
 import Access from './pages/Access.jsx'
+import HPAccess from './pages/HPAccess.jsx'
 import Settings from './pages/Settings.jsx'
 import Patientlist from './pages/HPPatientlist.jsx'
 import Appointments from './pages/Appointments.jsx'
+import HPAppointments from './pages/HPAppointments.jsx'
 import Prescriptions from './pages/Prescriptions.jsx'
 import MedicalRecords from './pages/MedicalRecords.jsx'
 import Notfound from './pages/Notfound.jsx'
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import "./assets/css/bootstrap.min.css"
+import "./assets/css/dashboard.css"
+import "./assets/css/mdb.min.css"
+import "./assets/css/style.css"
 
 function App() {
 
@@ -23,13 +29,15 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/hpsignup" element={<HPSignup />} />
         <Route path="/hpsignin" element={<HPSignin />} />
-        <Route path="/patientdashboard" element={<Patientdashboard />} />
-        <Route path="/access" element={<Access />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/patientdashboard" element={<Patientdashboard />} />
+        <Route path="/hpdashboard" element={<HPdashboard />} />
+        <Route path="/access" element={<Access />} />
+        <Route path="/hpaccess" element={<HPAccess />} />
         <Route path="/appointments" element={<Appointments />} />
+        <Route path="/hpappointments" element={<HPAppointments />} />
         <Route path="/prescriptions" element={<Prescriptions />} />
         <Route path="/medical-records" element={<MedicalRecords />} />
-        <Route path="/hpdashboard" element={<HPdashboard />} />
         <Route path="/patientlist" element={<Patientlist />} />
         <Route path="/*" element={<Notfound />} />
       </Routes>

@@ -84,6 +84,36 @@ public class AccessRequestService {
     public List<AccessRequest> getAllPatientRequests(Patient patient) {
         return accessRequestRepository.findAllByPatient(patient);
     }
+
+    public List<AccessRequest> getAllUserRequests(User user) {
+        return accessRequestRepository.findAllByUser(user);
+    }
+
+    public List<Patient> getAllUserApprovedPatients(int userId) {
+        User user = userService.getUserDetailsById(userId);
+        List<AccessRequest> approvedRequests = accessRequestRepository.findAllByUserAndStatus(user, RequestStatus.APPROVED);
+
+        List<Patient> approvedPatients = new ArrayList<>();
+        for (AccessRequest request : approvedRequests) {
+            approvedPatients.add(request.getPatient());
+        }
+
+        return approvedPatients;
+    }
+
+    public List<User> getAllPatientApprovedUsers(int patientId) {
+        Patient patient = patientService.getPatientDetailsById(patientId);
+        List<AccessRequest> approvedRequests = accessRequestRepository.findAllByPatientAndStatus(patient, RequestStatus.APPROVED);
+
+        List<User> approvedUsers = new ArrayList<>();
+        for (AccessRequest request : approvedRequests) {
+            approvedUsers.add(request.getUser());
+        }
+
+        return approvedUsers;
+    }
+
+
     public AccessRequest getRequestById(Long requestId) {
         return accessRequestRepository.findById(requestId).orElse(null);
     }

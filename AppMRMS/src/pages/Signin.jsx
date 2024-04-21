@@ -20,6 +20,8 @@ function Signin() {
             if (response.data.message === "Email does not exist") {
                 alert("Email does not exist");
             } else if (response.data.message === "Login Successful") {
+                const patientId = response.data.patient.patientid;
+                document.cookie = `patientId=${patientId}`;
                 navigate('/patientdashboard');
             } else {
                 alert("Incorrect Email or Password");

@@ -190,10 +190,10 @@ function Settings() {
                                         onChange={handleChange}
                                     />
                                     <div className="col-span-6 sm:col-span-full">
-                                        <button type="submit" className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save all</button>
+                                        <button type="submit" className="text-white bg-teal-400 hover:bg-teal-500 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save all</button>
                                     </div>
                                     <div class="col-span-6 sm:col-full">
-                                     <button class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={deleteAccount}>Delete Account</button>
+                                     <button class="text-white bg-teal-400 hover:bg-teal-500 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={deleteAccount}>Delete Account</button>
                                      </div>
                                 </div>
                             </form>

@@ -28,7 +28,7 @@ function HPPatientlist() {
     </div>
     <div class="flex items-center justify-between">
       <div class="ml-10 space-x-8 lg:ml-40">
-        <button class="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:outline-none focus:ring hover:bg-blue-700">
+        <button class="flex items-center gap-2 rounded-md bg-teal-400 px-4 py-2 text-sm font-semibold text-white focus:outline-none focus:ring hover:bg-blue-700">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
           </svg>
@@ -42,7 +42,7 @@ function HPPatientlist() {
     <div class="overflow-x-auto">
       <table class="w-full">
         <thead>
-          <tr class="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
+          <tr class="bg-teal-400 text-left text-xs font-semibold uppercase tracking-widest text-white">
             <th class="px-5 py-3">ID</th>
             <th class="px-5 py-3">Full Name</th>
             <th class="px-5 py-3">User Role</th>

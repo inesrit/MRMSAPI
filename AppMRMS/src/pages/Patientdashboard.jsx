@@ -5,6 +5,13 @@ import syringe from './../assets/syringe.png'
 import pill from './../assets/pill.png'
 import heart from './../assets/cardiogram.png'
 import Navbar from './../components/Navbar'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+    faChartPie, faFileAlt, faShoppingBasket, faUser, faSignOutAlt, faChevronLeft, faBars,
+    faCog, faComments, faSearch, faEye, faPencil, faTrashCan, faCloudUpload, faCheckCircle, faCalendarCheck, faReceipt, faFileMedical
+}
+    from "@fortawesome/free-solid-svg-icons"
+
 /**
  * 
  * @author Ines Rita
@@ -12,335 +19,498 @@ import Navbar from './../components/Navbar'
 function Patientdashboard() {
 
 
-    return (
-        
-   <>
+  return (
 
-<Navbar />
+    <>
+
+      <Navbar />
+
+      <div class="p-4 sm:ml-64">
 
 
-<div class="p-4 sm:ml-64">
-   
-{/* <!-- cards row 1 --> */}
-   <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Blood Status</p>
-                      <h5 class="mb-2 font-bold dark:text-white">100/70</h5>
-                      <p class="mb-0 dark:text-white dark:opacity-60">
-                        <span class="text-sm font-bold leading-normal text-emerald-500">+10 </span>
-                        since last week
-                      </p>
+      <div style={{ overflowX: "hidden" }}>
+        {/* Section: Design Block */}
+        <section className="text-center" style={{ backgroundColor: '#f5f6f7', paddingTop: 0, paddingBottom: 0 }}>
+          {/* Background image */}
+          {/* <div class="p-5 bg-image dashboard2-img"></div> */}
+          {/* Background image */}
+          <div className="col-md-12 m-auto">
+            <div className="card shadow-5-strong" style={{ marginTop: 0, background: 'hsla(0, 0%, 100%, 0.8)', backdropFilter: 'blur(30px)' }}>
+              <div className="container dashboard-2-container py-0">
+                <div className="row d-flex justify-content-center my-0">
+                  {/* <h1 class="fw-bold mb-5 wow fadeInUp">DashBoard</h1> */}
+
+
+
+
+
+                  <div id="dashboard-2-column2" className=" dashboard-2-column2 px-0" style={{ display: '' }}>
+
+                    <div className="card-body dashboard-second-ca">
+                      {/* ======== main-wrapper start =========== */}
+                      <main className="main-wrapper" style={{}}>
+                        <section className="section" style={{ paddingTop: 10, paddingBottom: 20 }}>
+                          {/* <div className="container-fluid"> */}
+
+
+
+                          <div className="row">
+
+                <div className="col-lg-6 col-12">
+                    <div className="card-style settings-card-1 mb-30">
+
+                        <div className="profile-info">
+                            <div className="d-flex align-items-center justify-content-evenly mb-0 profile-info-card">
+                                <div className="profile-image">
+                                    <img src="/images/profile-image.png" alt />
+                                    <div className="update-image">
+                                        <input type="file" />
+                                        <label htmlFor><FontAwesomeIcon icon={faCloudUpload} /></label>
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                                <div className="profile-meta col-md-8 col-12" style={{ textAlign: 'left' }}>
+
+                                    {/* <h3 className="text-bold mb-2">John Doe</h3> */}
+
+                                    <div className="row mb-2 profile-info-card-name">
+                                        <h3 className="text-bold mb-2 profile-card-row-h3">John Doe</h3>
+                                        <span className="status-btn active-btn profile-card-row-span"> Active</span>
+                                    </div>
+
+                                    <div className="row justify-content-between mb-2 profile-info-card-textCol">
+                                        <p className="text-sm text-bold mb-0 profile-card-para"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Role: </strong> UI/UX Design</p>
+                                        <p className="text-sm text-bold mb-0 profile-card-para"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Age: </strong> UI/UX Design</p>
+                                    </div>
+                                    <div className="row justify-content-between mb-2 profile-info-card-textCol">
+                                        <p className="text-sm text-bold mb-0 profile-card-para"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Email: </strong> UI/UX Design</p>
+                                        <p className="text-sm text-bold mb-0 profile-card-para"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Birth Date: </strong> UI/UX Design</p>
+                                    </div>
+                                    <div className="row justify-content-between mb-2 profile-info-card-textCol">
+                                        <p className="text-sm text-bold mb-0 profile-card-para"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Phone No: </strong> UI/UX Design</p>
+                                        <p className="text-sm text-bold mb-0 profile-card-para"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Status: </strong> UI/UX Design</p>
+                                    </div>
+
+
+
+                                    <p className="text-sm text-bold mb-2"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Work For: </strong> UI/UX Design</p>
+                                    <p className="text-sm text-bold mb-2"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Address: </strong> UI/UX Design</p>
+
+
+
+                                </div>
+                            </div>
+
+
+
+                            <div className="d-flex align-items-center  mb-2 profile-info-card-column2">
+                                <div className="profile-meta col-md-5 col-12 profile-info-card-column2-text">
+
+                                    <p className="text-sm text-bold mb-2"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Medical Insurance: </strong> None </p>
+                                    <p className="text-sm text-bold mb-2"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Vision Insurance: </strong>  Yes </p>
+                                    <p className="text-sm text-bold mb-2"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Dental Insurance: </strong> No </p>
+
+
+                                </div>
+
+
+
+                                <div className="profile-meta col-md-7 col-12" style={{ textAlign: 'left' }}>
+
+                                    <span className="divider mt-0">
+                                        <hr className="mt-0" />
+                                    </span>
+
+
+
+
+
+                                    <p className="text-sm text-bold mb-2"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Chat Id: </strong> UI/UX Design</p>
+                                    <p className="text-sm text-bold mb-2"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Legacy Id: </strong> UI/UX Design</p>
+
+
+                                    <p className="text-sm text-bold mb-2"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Patient Since: </strong> UI/UX Design</p>
+                                    <p className="text-sm text-bold mb-2"> <strong className="text-gray text-sm" style={{ fontSize: '16px' }}>Preferred Provider: </strong> UI/UX Design</p>
+
+
+
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                    {/* end card */}
+                </div>
+
+
+                <div className="col-md-6 col-12">
+                    <div className="card-style mb-3">
+                        {/* <h3 className="text-start mb-3"> Appointments </h3> */}
+                        <div className="row justify-content-between mb-3">
+                            <h3 className="text-start mb-0 dashboard-profile-heading"> Appointment </h3>
+                            <a href="" className="btn btn-custom btn-inline mb-0 dashboard-profile-btn">Browse All</a>
+                        </div>
+
+                        <div className="table-wrapper table-responsive">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <h6>Visit Type</h6>
+                                        </th>
+                                        <th>
+                                            <h6>Date</h6>
+                                        </th>
+                                        <th>
+                                            <h6>Provider</h6>
+                                        </th>
+                                        <th>
+                                            <h6>Status</h6>
+                                        </th>
+                                        
+                                    </tr>
+                                    {/* end table row*/}
+                                </thead>
+                                <tbody>
+                                    <tr style={{ border: '' }}>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="min-width">
+                                            <p>xx-yy-zzzz</p>
+                                        </td>
+                                        <td className="min-width">
+                                            <p>Esther Howard</p>
+                                        </td>
+
+
+                                        <td className="min-width">
+                                            <span className="status-btn active-btn">Active</span>
+                                        </td>
+                                    </tr>
+                                    {/* end table row */}
+
+
+                                </tbody>
+                            </table>
+                            {/* end table */}
+                        </div>
+                    </div>
+                    {/* end card */}
+                </div>
+                {/* end col */}
+            </div>
+
+
+
+            <div className="row">
+
+                <div className="col-md-6 col-12">
+                    <div className="card-style mb-3  dashboard-profile-card">
+                        <div className="row justify-content-between mb-3">
+                            <h4 className="text-start mb-0 dashboard-profile-heading"> Medical Records </h4>
+                            <a href="" className="btn btn-custom btn-inline mb-0 dashboard-profile-btn">Browse All</a>
+                        </div>
+                        <div className="table-wrapper table-responsive" style={{ width: '100%' }}>
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <h6>Date</h6>
+                                        </th>
+                                        <th>
+                                            <h6>Name</h6>
+                                        </th>
+                                        <th>
+                                            <h6>Result</h6>
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>xx-yy-zzzz</p>
+                                        </td>
+                                        <td className="">
+                                            <p>25</p>
+                                        </td>
+
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>xx-yy-zzzz</p>
+                                        </td>
+                                        <td className="">
+                                            <p>25</p>
+                                        </td>
+
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>xx-yy-zzzz</p>
+                                        </td>
+                                        <td className="">
+                                            <p>25</p>
+                                        </td>
+
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>xx-yy-zzzz</p>
+                                        </td>
+                                        <td className="">
+                                            <p>25</p>
+                                        </td>
+
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>xx-yy-zzzz</p>
+                                        </td>
+                                        <td className="">
+                                            <p>25</p>
+                                        </td>
+
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>xx-yy-zzzz</p>
+                                        </td>
+                                        <td className="">
+                                            <p>25</p>
+                                        </td>
+
+
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                            {/* end table */}
+                        </div>
+                    </div>
+                    {/* end card */}
+                </div>
+
+                <div className="col-md-6 col-12">
+                    <div className="card-style mb-3 dashboard-profile-card">
+                        <div className="row justify-content-between mb-3">
+                            <h4 className="text-start mb-0 dashboard-profile-heading"> Medications </h4>
+                            <a href="" className="btn btn-custom btn-inline mb-0 dashboard-profile-btn">Browse All</a>
+                        </div>
+
+                        <div className="table-wrapper table-responsive">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <h6>Medication Name</h6>
+                                        </th>
+                                        <th>
+                                            <h6>Dose</h6>
+                                        </th>
+                                        <th>
+                                            <h6>Frequency</h6>
+                                        </th>
+                                        <th>
+                                            <h6>Condition</h6>
+                                        </th>
+
+                                    </tr>
+                                    {/* end table row*/}
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>2 puff</p>
+                                        </td>
+                                        <td className="">
+                                            <p>1 daily</p>
+                                        </td>
+
+
+                                        <td className="">
+                                            <p>Flu</p>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>2 puff</p>
+                                        </td>
+                                        <td className="">
+                                            <p>1 daily</p>
+                                        </td>
+
+
+                                        <td className="">
+                                            <p>Flu</p>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>2 puff</p>
+                                        </td>
+                                        <td className="">
+                                            <p>1 daily</p>
+                                        </td>
+
+
+                                        <td className="">
+                                            <p>Flu</p>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>2 puff</p>
+                                        </td>
+                                        <td className="">
+                                            <p>1 daily</p>
+                                        </td>
+
+
+                                        <td className="">
+                                            <p>Flu</p>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>2 puff</p>
+                                        </td>
+                                        <td className="">
+                                            <p>1 daily</p>
+                                        </td>
+
+
+                                        <td className="">
+                                            <p>Flu</p>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Urgent</p>
+                                        </td>
+                                        <td className="">
+                                            <p>2 puff</p>
+                                        </td>
+                                        <td className="">
+                                            <p>1 daily</p>
+                                        </td>
+
+
+                                        <td className="">
+                                            <p>Flu</p>
+                                        </td>
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                            {/* end table */}
+                        </div>
+                    </div>
+                    {/* end card */}
+                </div>
+
+            </div>
+
+
+                          {/* </div> */}
+
+                        </section>
+
+
+
+                      </main>
+
+
                     </div>
                   </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-circle ">
-                    <img src={blood} class="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-                    </div>
-                  </div>
+
+
+                  {/* <Profile/> */}
+
+                  {/* <Outlet/> */}
+
+
+
                 </div>
               </div>
             </div>
           </div>
-
-
-
-          <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Heart Rate</p>
-                      <h5 class="mb-2 font-bold dark:text-white">78 bpm</h5>
-                      <p class="mb-0 dark:text-white dark:opacity-60">
-                        <span class="text-sm font-bold leading-normal text-emerald-500">+3% </span>
-                        since last week
-                      </p>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-circle ">
-                    <img src={heart} class="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-          <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Glucose Level</p>
-                      <h5 class="mb-2 font-bold dark:text-white">78-92</h5>
-                      <p class="mb-0 dark:text-white dark:opacity-60">
-                        <span class="text-sm font-bold leading-normal text-emerald-500">+0 </span>
-                        since last week
-                      </p>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-circle">
-                    <img src={energy} class="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-        
-
-
-
-  
-
-
-   
-
- {/* <!-- cards row 3 --> */}
-
-        <div class="flex flex-wrap mt-6 -mx-3">
-          <div class="w-full max-w-full px-3 mt-0 mb-6 lg:mb-0 lg:w-7/12 lg:flex-none">
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl dark:bg-gray-950 border-black-125 rounded-2xl bg-clip-border">
-              <div class="p-4 pb-0 mb-0 rounded-t-4">
-                <div class="flex justify-between">
-                  <h6 class="mb-2 dark:text-white">Appointments</h6>
-                </div>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="items-center w-full mb-4 align-top border-collapse border-gray-200 dark:border-white/40">
-                  <tbody>
-                    <tr>
-                      <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                        <div class="flex items-center px-2 py-1">
-                          <div>
-                          <img src="" alt="" />
-                          </div>
-                          <div class="ml-6">
-                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Description</p>
-                            <h6 class="mb-0 text-sm leading-normal dark:text-white">Check up</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Location</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">Newcastle</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Date</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">April 12</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="flex-1 text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Time</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">12:00pm</h6>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                        <div class="flex items-center px-2 py-1">
-                          <div>
-                          <img src="" alt="" />
-                          </div>
-                          <div class="ml-6">
-                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Description</p>
-                            <h6 class="mb-0 text-sm leading-normal dark:text-white">Check up</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Location</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">Newcastle</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Date</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">April 12</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="flex-1 text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Time</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">12:00pm</h6>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                        <div class="flex items-center px-2 py-1">
-                          <div>
-                          <img src="" alt="" />
-                          </div>
-                          <div class="ml-6">
-                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Description</p>
-                            <h6 class="mb-0 text-sm leading-normal dark:text-white">Check up</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Location</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">Newcastle</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Date</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">April 12</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="flex-1 text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Time</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">12:00pm</h6>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                        <div class="flex items-center px-2 py-1">
-                          <div>
-                            <img src="" alt="" />
-                          </div>
-                          <div class="ml-6">
-                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Description</p>
-                            <h6 class="mb-0 text-sm leading-normal dark:text-white">Check up</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Location</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">Newcastle</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Date</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">April 12</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="flex-1 text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Time</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">12:00pm</h6>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+        </section>
 
 
 
 
-          <div class="w-full max-w-full px-3 mt-0 lg:w-5/12 lg:flex-none">
-            <div class="border-black/12.5 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
-              <div class="p-4 pb-0 rounded-t-4">
-                <h6 class="mb-0 dark:text-white">Prescription</h6>
-              </div>
-              <div class="flex-auto p-4">
-                <ul class="flex flex-col pl-0 mb-0 rounded-lg">
-                  <li class="relative flex justify-between py-2 pr-4 mb-2 border-0 rounded-t-lg rounded-xl text-inherit">
-                    <div class="flex items-center">
-                      <div class="inline-block w-8 h-8 mr-4 text-center text-black bg-center shadow-sm fill-current stroke-none bg-gradient-to-tl rounded-xl">
-                      <img src={pill} class="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-                        <i class="text-white ni ni-mobile-button relative top-0.75 text-xxs"></i>
-                      </div>
-                      <div class="flex flex-col">
-                        <h6 class="mb-1 text-sm leading-normal text-slate-700 dark:text-white">Oxytocin</h6>
-                        <span class="text-xs leading-tight dark:text-white/80">1 done, <span class="font-semibold">2 pending</span></span>
-                      </div>
-                    </div>
-                    <div class="flex">
-                      <button class="group ease-in leading-pro text-xs rounded-3.5xl p-1.2 h-6.5 w-6.5 mx-0 my-auto inline-block cursor-pointer border-0 bg-transparent text-center align-middle font-bold text-slate-700 shadow-none transition-all dark:text-white"><i class="ni ease-bounce text-2xs group-hover:translate-x-1.25 ni-bold-right transition-all duration-200" aria-hidden="true"></i></button>
-                    </div>
-                  </li>
-                  <li class="relative flex justify-between py-2 pr-4 mb-2 border-0 rounded-xl text-inherit">
-                    <div class="flex items-center">
-                      <div class="inline-block w-8 h-8 mr-4 text-center text-black bg-center shadow-sm fill-current stroke-none bg-gradient-to-tl rounded-xl">
-                      <img src={pill} class="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-                        <i class="text-white ni ni-tag relative top-0.75 text-xxs"></i>
-                      </div>
-                      <div class="flex flex-col">
-                        <h6 class="mb-1 text-sm leading-normal text-slate-700 dark:text-white">Paracetamol</h6>
-                        <span class="text-xs leading-tight dark:text-white/80">4 done, <span class="font-semibold">1 open</span></span>
-                      </div>
-                    </div>
-                    <div class="flex">
-                      <button class="group ease-in leading-pro text-xs rounded-3.5xl p-1.2 h-6.5 w-6.5 mx-0 my-auto inline-block cursor-pointer border-0 bg-transparent text-center align-middle font-bold text-slate-700 shadow-none transition-all dark:text-white"><i class="ni ease-bounce text-2xs group-hover:translate-x-1.25 ni-bold-right transition-all duration-200" aria-hidden="true"></i></button>
-                    </div>
-                  </li>
-                  <li class="relative flex justify-between py-2 pr-4 mb-2 border-0 rounded-b-lg rounded-xl text-inherit">
-                    <div class="flex items-center">
-                      <div class="inline-block w-8 h-8 mr-4 text-center text-black bg-center shadow-sm fill-current stroke-none bg-gradient-to-tl rounded-xl">
-                      <img src={syringe} class="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-                        <i class="text-white ni ni-box-2 relative top-0.75 text-xxs"></i>
-                      </div>
-                      <div class="flex flex-col">
-                        <h6 class="mb-1 text-sm leading-normal text-slate-700 dark:text-white">Depo-provera</h6>
-                        <span class="text-xs leading-tight dark:text-white/80">1 is active, <span class="font-semibold">8 closed</span></span>
-                      </div>
-                    </div>
-                    <div class="flex">
-                      <button class="group ease-in leading-pro text-xs rounded-3.5xl p-1.2 h-6.5 w-6.5 mx-0 my-auto inline-block cursor-pointer border-0 bg-transparent text-center align-middle font-bold text-slate-700 shadow-none transition-all dark:text-white"><i class="ni ease-bounce text-2xs group-hover:translate-x-1.25 ni-bold-right transition-all duration-200" aria-hidden="true"></i></button>
-                    </div>
-                  </li>
-                  <li class="relative flex justify-between py-2 pr-4 border-0 rounded-b-lg rounded-xl text-inherit">
-                    <div class="flex items-center">
-                      <div class="inline-block w-8 h-8 mr-4 text-center text-black bg-center shadow-sm fill-current stroke-none bg-gradient-to-tl rounded-xl">
-                      <img src={pill} class="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-                        <i class="text-white ni ni-satisfied relative top-0.75 text-xxs"></i>
-                      </div>
-                      <div class="flex flex-col">
-                        <h6 class="mb-1 text-sm leading-normal text-slate-700 dark:text-white">CBD</h6>
-                        <span class="text-xs leading-tight dark:text-white/80"><span class="font-semibold">1 done </span></span>
-                      </div>
-                    </div>
-                    <div class="flex">
-                      <button class="group ease-in leading-pro text-xs rounded-3.5xl p-1.2 h-6.5 w-6.5 mx-0 my-auto inline-block cursor-pointer border-0 bg-transparent text-center align-middle font-bold text-slate-700 shadow-none transition-all dark:text-white"><i class="ni ease-bounce text-2xs group-hover:translate-x-1.25 ni-bold-right transition-all duration-200" aria-hidden="true"></i></button>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            </div>
-            </div>
+      </div>
 
 
+</div>
 
 
+    </>
 
 
-            </div>
-
-
-</>
-
-
-    )
+  )
 }
- 
+
 export default Patientdashboard
- 

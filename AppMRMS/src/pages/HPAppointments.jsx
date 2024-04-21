@@ -7,7 +7,7 @@
  */
 
 import Pic from './../assets/Medical-health-logo-design-on-transparent-background-PNG.png'
-import Navbar from './../components/Navbar'
+import Navbar from '../components/HPNavbar'
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
@@ -25,7 +25,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-function Appointments() {
+function HPAppointments() {
 
 
   const style = {
@@ -41,12 +41,20 @@ function Appointments() {
   };
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = (appointmentId) => {
+    setOpen(true);
+    setSelectedAppointmentId(appointmentId);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedAppointmentId(null);
+  };
 
   const [appointments, setAppointments] = useState([]);
 
-  const [users, setUsers] = useState([]);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
+
+  const [patients, setPatients] = useState([]);
 
   const navigate = useNavigate();
 
@@ -61,7 +69,7 @@ function Appointments() {
 
   const [openModal, setOpenModal] = useState(false);
   const [formData, setFormData] = useState({
-    userid: '',
+    patientid: '',
     visitType: '',
     appLocation: '',
     appDate: '',
@@ -75,14 +83,14 @@ function Appointments() {
     event.preventDefault();
 
     try {
-      
-      const patientIdString = document.cookie
+
+      const userIdString = document.cookie
         .split('; ')
-        .find(row => row.startsWith('patientId='))
+        .find(row => row.startsWith('userId='))
         .split('=')[1];
 
-      const patientId = parseInt(patientIdString);
-      const userId = parseInt(formData.userid);
+      const userId = parseInt(userIdString);
+      const patientId = parseInt(formData.patientid);
       // Prepare request body
       const requestBody = {
         patientId: patientId, // or simply patientId,
@@ -93,16 +101,13 @@ function Appointments() {
         appTime: formData.appTime,
         appComments: formData.appComments
       };
-
       console.log(requestBody)
       // Send POST request to create appointment
       await axios.post('http://localhost:8080/api/v1/appointment/create', requestBody, {
         withCredentials: true
       });
       // Close modal after successful submission
-      
-      handleCloseModal();
-
+      handleClose();
     } catch (error) {
       console.error('Error creating appointment:', error);
       // Handle error
@@ -118,34 +123,34 @@ function Appointments() {
   };
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchPatients = async () => {
       try {
-        const patientIdCookie = document.cookie
+        const userIdCookie = document.cookie
           .split('; ')
-          .find(row => row.startsWith('patientId='))
+          .find(row => row.startsWith('userId='))
           .split('=')[1];
-        const response = await axios.get(`http://localhost:8080/api/v1/access-requests/all-patient-requests-approved?patientId=${patientIdCookie}`, {
+        const response = await axios.get(`http://localhost:8080/api/v1/access-requests/all-user-requests-approved?userId=${userIdCookie}`, {
           withCredentials: true
         });
-        setUsers(response.data);
+        setPatients(response.data);
         console.log(response.data);
       } catch (error) {
         console.error('Error fetching appointments:', error);
       }
     };
 
-    fetchUsers();
+    fetchPatients();
   }, []);
 
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const patientIdCookie = document.cookie
+        const userIdCookie = document.cookie
           .split('; ')
-          .find(row => row.startsWith('patientId='))
+          .find(row => row.startsWith('userId='))
           .split('=')[1];
-        const response = await axios.get(`http://localhost:8080/api/v1/appointment/all-patient-appointments?patientId=${patientIdCookie}`, {
+        const response = await axios.get(`http://localhost:8080/api/v1/appointment/all-user-appointments?userId=${userIdCookie}`, {
           withCredentials: true
         });
         setAppointments(response.data);
@@ -158,6 +163,97 @@ function Appointments() {
     fetchAppointments();
   }, []);
 
+  const updateAppointmentStatus = async (appointmentId, status, setAppointments) => {
+    try {
+      await axios.put(`http://localhost:8080/api/v1/appointment/update-status?appointmentId=${appointmentId}&status=APPROVED`);
+
+      setAppointments(prevAppointments => {
+        return prevAppointments.map(appointment => {
+          if (appointment.appointmentid === appointmentId) {
+            return { ...appointment, appStatus: status };
+          } else {
+            return appointment;
+          }
+        });
+      });
+
+    } catch (error) {
+      console.error('Error updating appointment status:', error);
+      // Handle error
+    }
+  };
+
+  const updateAppointmentStatusToDenied = async (appointmentId, setAppointments) => {
+    try {
+      await axios.put(`http://localhost:8080/api/v1/appointment/update-status?appointmentId=${appointmentId}&status=DENIED`);
+
+      // Update the appointments state directly
+      setAppointments(prevAppointments => {
+        return prevAppointments.map(appointment => {
+          if (appointment.appointmentid === appointmentId) {
+            return { ...appointment, appStatus: 'DENIED' };
+          } else {
+            return appointment;
+          }
+        });
+      });
+    } catch (error) {
+      console.error('Error updating appointment status to DENIED:', error);
+      // Handle error
+    }
+  };
+
+  const updateAppointment = async (appointmentId, visitType, comments) => {
+    try {
+
+      const index = appointments.findIndex(appointment => appointment.appointmentid === appointmentId);
+      console.log(index)
+      // Make sure the appointment is found
+      if (index !== -1) {
+        // Create the updated appointment object
+        const updatedAppointment = {
+          ...appointments[index], // Get the existing appointment
+          visitType: visitType,
+          appComments: comments
+        };
+
+        // Send the PUT request to update the appointment
+        await axios.put(`http://localhost:8080/api/v1/appointment/update`, updatedAppointment);
+
+        setAppointments(prevAppointments => {
+          const newAppointments = [...prevAppointments];
+          newAppointments[index] = updatedAppointment;
+          return newAppointments;
+        });
+
+        handleClose();
+      } else {
+        console.error('Appointment not found for update');
+      }
+    } catch (error) {
+      console.error('Error updating appointment:', error);
+      // Handle error
+    }
+  };
+
+
+  const handleUpdateStatus = async (appointmentId) => {
+    await updateAppointmentStatus(appointmentId, 'APPROVED', setAppointments);
+  };
+
+
+  const handleUpdateStatusToDenied = async (appointmentId) => {
+    await updateAppointmentStatusToDenied(appointmentId, setAppointments);
+  };
+
+  const handleSubmit = async (event, appointmentId) => {
+    event.preventDefault();
+    console.log(appointmentId)
+    const visitTypeInput = event.target.elements.visitType.value;
+    const commentsInput = event.target.elements.comments.value;
+
+    await updateAppointment(appointmentId, visitTypeInput, commentsInput);
+  };
 
 
   const appointmentsJSX = appointments.map((appointment, index) => (
@@ -190,6 +286,43 @@ function Appointments() {
         <span className={`status-btn ${appointment.appStatus === 'PENDING' ? 'active-btn' : (appointment.appStatus === 'APPROVED' ? 'success-btn' : 'close-btn')}`}>
           {appointment.appStatus}
         </span>
+      </td>
+      <td>
+        <div className="justify-content-center flex items-center">
+          <button className="text-success dasboard-action-icon" onClick={() => handleUpdateStatus(appointment.appointmentid)}>
+            {/* <i className="lni lni-eye" /> */}
+            <FontAwesomeIcon icon={faCircleCheck} />
+          </button>
+          <button className="text-success dasboard-action-icon" onClick={() => handleOpen(appointment.appointmentid)}>
+            {/* <i className="lni lni-pencil" /> */}
+            <FontAwesomeIcon icon={faPencil} />
+          </button>
+          <Modal
+            open={selectedAppointmentId !== null}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <form class="max-w-sm mx-auto" onSubmit={(event) => handleSubmit(event, selectedAppointmentId)}>
+                {/* Input fields for visit type and comments */}
+                <div class="mb-5">
+                  <label for="visit-type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visit Type</label>
+                  <input type="text" id="visit-type" name="visitType" class="..." placeholder="Check-Up" required />
+                </div>
+                <div class="mb-5">
+                  <label for="comments" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Comments</label>
+                  <input type="text" id="comments" name="comments" class="..." placeholder="Any concerns..." required />
+                </div>
+                <button type="submit" class="...">Submit</button>
+              </form>
+            </Box>
+          </Modal>
+          <button className="text-success dasboard-action-icon" onClick={() => handleUpdateStatusToDenied(appointment.appointmentid)}>
+            {/* <i className="lni lni-trash-can" /> */}
+            <FontAwesomeIcon icon={faTrashCan} />
+          </button>
+        </div>
       </td>
     </tr>
   ));
@@ -238,22 +371,22 @@ function Appointments() {
                             >
                               <Box sx={style}>
                                 <form class="max-w-sm mx-auto" onSubmit={handleCreateAppointment}>
-                                <div className="mb-5">
+                                  <div className="mb-5">
                                     <label htmlFor="patient" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                      Select Provider
+                                      Select Patient
                                     </label>
                                     <select
-                                      id="userid"
-                                      name="userid"
+                                      id="patientid"
+                                      name="patientid"
                                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                      value={formData.userid}
+                                      value={formData.patientid}
                                       onChange={handleChange}
                                       required
                                     >
-                                      <option value="">Select a user</option>
-                                      {users.map(user => (
-                                        <option key={user.userid} value={user.userid}>
-                                          {user.username}
+                                      <option value="">Select a patient</option>
+                                      {patients.map(patient => (
+                                        <option key={patient.patientid} value={patient.patientid}>
+                                          {patient.patientName}
                                         </option>
                                       ))}
                                     </select>
@@ -338,7 +471,7 @@ function Appointments() {
                                     Submit
                                   </button>
                                 </form>
-                                </Box>
+                              </Box>
                             </Modal>
                           </div>
                         </div>
@@ -392,7 +525,9 @@ function Appointments() {
                                               <th class="px-3 py-3">
                                                 <h6>Status</h6>
                                               </th >
-
+                                              <th class="px-3 py-3">
+                                                <h6>Action</h6>
+                                              </th>
                                               {/* <th>
                                                 <h6>Action</h6>
                                             </th> */}
@@ -457,4 +592,4 @@ function Appointments() {
   )
 }
 
-export default Appointments
+export default HPAppointments

@@ -87,4 +87,10 @@ public class MedicalRecordController {
         return ResponseEntity.ok().body(patientRecords);
     }
 
+    @GetMapping("/all-user-records")
+    public ResponseEntity<List<MedicalRecord>> getAllUserRecords(@RequestParam int userId) {
+        List<MedicalRecord> userRecords = medicalRecordService.getAllMedicalRecordsByUserId(userId);
+        return ResponseEntity.ok().body(userRecords);
+    }
+
 }

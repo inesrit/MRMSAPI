@@ -18,39 +18,28 @@ function HPSignin() {
 
 
   async function login(event) {
-      event.preventDefault();
-      try {
-        await axios.post("http://localhost:8080/api/v1/user/login", {
-          email: email,
-          password: password,
-          }).then((res) => 
-          {
-           console.log(res.data);
-           
-           if (res.data.message == "Email does not exit") 
-           {
-             alert("Email does not exist");
-           } 
-           else if(res.data.message == "Login Successful")
-           { 
-              
-              navigate('/hpdashboard');
-           } 
-            else 
-           { 
-              alert("Incorrect Email or Password");
-           }
-        }, fail => {
-         console.error(fail); // Error!
-});
-      }
+    event.preventDefault();
+    try {
+        const response = await axios.post("http://localhost:8080/api/v1/user/login", {
+            email: email,
+            password: password,
+        }, { withCredentials: true });
 
 
-       catch (err) {
-        alert(err);
-      }
-    
+        if (response.data.message === "Email does not exist") {
+            alert("Email does not exist");
+        } else if (response.data.message === "Login Successful") {
+            const userId = response.data.user.userid;
+            document.cookie = `userId=${userId}`;
+            navigate('/hpdashboard');
+        } else {
+            alert("Incorrect Email or Password");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("An error occurred during login");
     }
+}
 
 
 

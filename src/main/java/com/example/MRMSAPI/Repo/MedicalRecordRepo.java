@@ -18,7 +18,7 @@ public interface MedicalRecordRepo extends JpaRepository<MedicalRecord, Integer>
 
     List<MedicalRecord> findAllByPatient_Patientid(int patientId);
 
-
+    List<MedicalRecord> findAllByUser_Userid(int userId);
 
     @Transactional
     @Modifying

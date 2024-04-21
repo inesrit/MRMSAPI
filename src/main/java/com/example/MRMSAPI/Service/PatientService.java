@@ -87,7 +87,7 @@ public class PatientService {
                     cookiepatient.setHttpOnly(true);
                     cookiepatient.setSecure(false);
                     response.addCookie(cookiepatient);
-                    return new LoginResponse("Login Successful", true);
+                    return new LoginResponse("Login Successful", true, patient1);
                 } else {
                     return new LoginResponse("Login Failed", false);
                 }

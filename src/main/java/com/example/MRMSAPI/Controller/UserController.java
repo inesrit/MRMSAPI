@@ -41,15 +41,15 @@ public class UserController {
         return ResponseEntity.ok("Logout Successful");
     }
 
-//    @GetMapping(path = "/current-user-id")
-//    public ResponseEntity<Integer> getCurrentUserId() {
-//        User loggedInUser = (User) session.getAttribute("loggedInUser");
-//        if (loggedInUser != null) {
-//            return ResponseEntity.ok(loggedInUser.getUserid());
-//        } else {
-//            return ResponseEntity.badRequest().body(null);
-//        }
-//    }
+    @GetMapping(path = "/current-user-id")
+    public ResponseEntity<Integer> getCurrentUserId() {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            return ResponseEntity.ok(loggedInUser.getUserid());
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 
 
     @PutMapping(path = "/update")
@@ -78,11 +78,11 @@ public class UserController {
     }
 
 
-//    @GetMapping(path = "/details")
-//    public ResponseEntity<User> getLoggedInUserDetails() {
-//        User loggedInUser = userService.getLoggedInUserDetails();
-//        return ResponseEntity.ok(loggedInUser);
-//    }
+    @GetMapping(path = "/details")
+    public ResponseEntity<User> getLoggedInUserDetails() {
+        User loggedInUser = userService.getLoggedInUserDetails();
+        return ResponseEntity.ok(loggedInUser);
+    }
 
     @GetMapping(path = "/user-details")
     public ResponseEntity<User> getUserDetailsById(@RequestParam int userId) {

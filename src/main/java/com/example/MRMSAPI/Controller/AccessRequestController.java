@@ -65,6 +65,26 @@ public class AccessRequestController {
         return ResponseEntity.ok(accessRequests);
     }
 
+    @GetMapping(path = "/all-user-requests")
+    public ResponseEntity<List<AccessRequest>> getAllUserRequests(@RequestParam int userId) {
+        User user = userService.getUserDetailsById(userId);
+        List<AccessRequest> accessRequests = accessRequestService.getAllUserRequests(user);
+        return ResponseEntity.ok(accessRequests);
+    }
+
+    @GetMapping("/all-user-requests-approved")
+    public ResponseEntity<List<Patient>> getAllUserRequestsApproved(@RequestParam int userId) {
+        List<Patient> approvedPatients = accessRequestService.getAllUserApprovedPatients(userId);
+        return ResponseEntity.ok(approvedPatients);
+    }
+
+    @GetMapping("/all-patient-requests-approved")
+    public ResponseEntity<List<User>> getAllPatientRequestsApproved(@RequestParam int patientId) {
+        List<User> approvedUsers = accessRequestService.getAllPatientApprovedUsers(patientId);
+        return ResponseEntity.ok(approvedUsers);
+    }
+
+
 
     //method that gets a specific ID request details
     @GetMapping(path = "/request-details")

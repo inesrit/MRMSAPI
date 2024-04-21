@@ -5,7 +5,9 @@ import com.example.MRMSAPI.Entity.*;
 import com.example.MRMSAPI.Repo.MedicalRecordRepo;
 import com.example.MRMSAPI.Repo.UserRepo;
 import com.example.MRMSAPI.response.LoginResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +36,9 @@ public class UserService {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    HttpServletResponse response;
 
     public String addUser(User user) {
 
@@ -67,6 +72,10 @@ public class UserService {
                 if (user.isPresent()) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("loggedInUser", user1);
+                    Cookie cookieuser = new Cookie("user", String.valueOf(user1.getUserid()));
+                    cookieuser.setHttpOnly(true);
+                    cookieuser.setSecure(false);
+                    response.addCookie(cookieuser);
                     return new LoginResponse("Login Successful", true, user1);
                 } else {
                     return new LoginResponse("Login Failed", false);
