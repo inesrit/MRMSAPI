@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Pic from './../assets/Medical-health-logo-design-on-transparent-background-PNG.png'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -19,6 +19,8 @@ import {
  */
 function HPNavbar() {
 
+    const [user, setUser] = useState([]);
+
     const navigate = useNavigate();
 
     async function logOut(event) {
@@ -26,7 +28,8 @@ function HPNavbar() {
         try {
             await axios.post("http://localhost:8080/api/v1/user/logout", {
             }).then((res) => {
-                document.cookie = 'patientDetails=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                 console.log(res.data);
             }, fail => {
                 console.error(fail); // Error!
@@ -37,6 +40,26 @@ function HPNavbar() {
             alert(err);
         }
     }
+
+    useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const userIdCookie = document.cookie
+              .split('; ')
+              .find(row => row.startsWith('userId='))
+              .split('=')[1];
+            const response = await axios.get(`http://localhost:8080/api/v1/user/user-details?userId=${userIdCookie}`, {
+              withCredentials: true
+            });
+            setUser(response.data);
+            console.log(response.data);
+          } catch (error) {
+            console.error('Error fetching appointments:', error);
+          }
+        };
+    
+        fetchUser();
+      }, []);
 
     let [profileDivOpen, setprofileDivOpen] = useState(false)
 
@@ -90,7 +113,7 @@ function HPNavbar() {
                                                     <img src="/images/profile-image.png" alt />
                                                 </div>
                                                 <div className="profile-dropdown-username">
-                                                    <h6 className="fw-500 ">Adam Joe</h6>
+                                                    <h6 className="fw-500 ">{user.username}</h6>
                                                     {/* <p>Admin</p> */}
                                                 </div>
                                             </div>
@@ -104,8 +127,8 @@ function HPNavbar() {
                                             <div className="author-info flex items-center justify-content-center !p-1">
 
                                                 <div className="content text-center">
-                                                    <h4 className="text-medium" style={{ fontSize: 16 }}>Adam Joe</h4>
-                                                    <a className href="#" style={{ fontSize: 14 }}>Email@gmail.com</a>
+                                                    <h4 className="text-medium" style={{ fontSize: 16 }}>{user.username}</h4>
+                                                    <a className href="#" style={{ fontSize: 14 }}>{user.email}</a>
                                                 </div>
                                             </div>
                                         </li>
@@ -157,7 +180,7 @@ function HPNavbar() {
                             </a>
                         </li>
                         <li>
-                            <a href="/prescriptions" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="/hp-medical-records" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <FontAwesomeIcon icon={faFileAlt} className="" />
                                 <span class="flex-1 ms-3 whitespace-nowrap">Medical records</span>
                                 {/* <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span> */}
@@ -171,7 +194,7 @@ function HPNavbar() {
                             </a>
                         </li>
                         <li>
-                            <a href="/prescriptions" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="/hpprescriptions" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <FontAwesomeIcon icon={faFileMedical} className="" />
                                 <span class="flex-1 ms-3 whitespace-nowrap">Prescriptions</span>
                                 {/* <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span> */}

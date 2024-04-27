@@ -11,7 +11,7 @@ import Navbar from '../components/HPNavbar'
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  faFileAlt, faUser, faSignOutAlt, faChevronLeft, faBars, faPlus,
+  faFileAlt, faUser, faSignOutAlt, faChevronLeft, faBars, faPlus, faCircleXmark,
   faCog, faComments, faSearch, faCalendarCheck, faReceipt, faFileMedical, faPencil, faTrashCan, faCloudUpload, faCircleCheck
 }
   from "@fortawesome/free-solid-svg-icons"
@@ -56,6 +56,16 @@ function HPAppointments() {
 
   const [patients, setPatients] = useState([]);
 
+  const [openModal, setOpenModal] = useState(false);
+  const [formData, setFormData] = useState({
+    patientid: '',
+    visitType: '',
+    appLocation: '',
+    appDate: '',
+    appTime: '',
+    appComments: ''
+  });
+
   const navigate = useNavigate();
 
   const handleOpenModal = () => {
@@ -66,16 +76,8 @@ function HPAppointments() {
     setOpenModal(false);
   };
 
-
-  const [openModal, setOpenModal] = useState(false);
-  const [formData, setFormData] = useState({
-    patientid: '',
-    visitType: '',
-    appLocation: '',
-    appDate: '',
-    appTime: '',
-    appComments: ''
-  });
+ 
+  
 
 
 
@@ -236,6 +238,15 @@ function HPAppointments() {
     }
   };
 
+  const deleteAppointment = async (appointmentId) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/appointment/delete?appointmentId=${appointmentId}`);
+      setAppointments(prevAppointments => prevAppointments.filter(appointment => appointment.appointmentid !== appointmentId));
+    } catch (error) {
+      console.error('Error deleting access', error);
+    }
+  };
+
 
   const handleUpdateStatus = async (appointmentId) => {
     await updateAppointmentStatus(appointmentId, 'APPROVED', setAppointments);
@@ -253,6 +264,10 @@ function HPAppointments() {
     const commentsInput = event.target.elements.comments.value;
 
     await updateAppointment(appointmentId, visitTypeInput, commentsInput);
+  };
+
+  const handleDeleteAppointment = async (appointmentId) => {
+    await deleteAppointment(appointmentId);
   };
 
 
@@ -319,6 +334,10 @@ function HPAppointments() {
             </Box>
           </Modal>
           <button className="text-success dasboard-action-icon" onClick={() => handleUpdateStatusToDenied(appointment.appointmentid)}>
+            {/* <i className="lni lni-trash-can" /> */}
+            <FontAwesomeIcon icon={faCircleXmark} />
+          </button>
+          <button className="text-success dasboard-action-icon" onClick={() => handleDeleteAppointment(appointment.appointmentid)}>
             {/* <i className="lni lni-trash-can" /> */}
             <FontAwesomeIcon icon={faTrashCan} />
           </button>

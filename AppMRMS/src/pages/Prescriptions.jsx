@@ -8,235 +8,473 @@
 
 import Pic from './../assets/Medical-health-logo-design-on-transparent-background-PNG.png'
 import Navbar from './../components/Navbar'
+import { useState, useEffect } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faFileAlt, faUser, faSignOutAlt, faChevronLeft, faBars, faPlus,
+  faCog, faComments, faSearch, faCalendarCheck, faReceipt, faFileMedical, faPencil, faTrashCan, faCloudUpload, faCircleCheck
+}
+  from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 function Prescriptions() {
-    return (
-        <>
-
-<Navbar />
 
 
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [prescriptions, setPrescriptions] = useState([]);
+
+  const [users, setUsers] = useState([]);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [formData, setFormData] = useState({
+    prescriptionid: '',
+    pxName: '',
+    pxDose: '',
+    pxFrequency: '',
+    pxQuantity: '',
+    pxCondition: '',
+    pxDate: ''
+  });
+
+  const navigate = useNavigate();
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+ 
+
+
+  const handleCreatePrescription = async (event) => {
+    event.preventDefault();
+
+    try {
+      
+      const patientIdString = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('patientId='))
+        .split('=')[1];
+
+      const patientId = parseInt(patientIdString);
+      const userId = parseInt(formData.userid);
+      // Prepare request body
+      const requestBody = {
+        patientId: patientId, // or simply patientId,
+        userId: userId,
+        pxName: formData.pxName,
+        pxDose: formData.pxDose,
+        pxFrequency: formData.pxFrequency,
+        pxQuantity: formData.pxQuantity,
+        pxCondition: formData.pxCondition,
+        pxDate: formData.pxDate
+      };
+
+      console.log(requestBody)
+      await axios.post('http://localhost:8080/api/v1/prescription/create', requestBody, {
+        withCredentials: true
+      });
+      // Close modal after successful submission
+      
+      handleCloseModal();
+
+    } catch (error) {
+      console.error('Error creating prescription:', error);
+      // Handle error
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value
+    }));
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const patientIdCookie = document.cookie
+          .split('; ')
+          .find(row => row.startsWith('patientId='))
+          .split('=')[1];
+        const response = await axios.get(`http://localhost:8080/api/v1/access-requests/all-patient-requests-approved?patientId=${patientIdCookie}`, {
+          withCredentials: true
+        });
+        setUsers(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching prescriptions:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+
+  useEffect(() => {
+    const fetchPrescriptions = async () => {
+      try {
+        const patientIdCookie = document.cookie
+          .split('; ')
+          .find(row => row.startsWith('patientId='))
+          .split('=')[1];
+        const response = await axios.get(`http://localhost:8080/api/v1/prescription/all-patient-prescriptions?patientId=${patientIdCookie}`, {
+          withCredentials: true
+        });
+        setPrescriptions(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching prescriptions:', error);
+      }
+    };
+
+    fetchPrescriptions();
+  }, []);
 
 
 
+  const prescriptionsJSX = prescriptions.map((prescription, index) => (
+    <tr key={index} style={{ border: '' }}>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{index + 1}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{prescription.patient.patientName}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{prescription.user.username}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{prescription.pxName}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{prescription.pxDose}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{prescription.pxFrequency}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{prescription.pxQuantity}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{prescription.pxCondition}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{prescription.pxDate}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <span className={`status-btn ${prescription.pxStatus === 'PENDING' ? 'active-btn' : (prescription.pxStatus === 'APPROVED' ? 'success-btn' : 'close-btn')}`}>
+          {prescription.pxStatus}
+        </span>
+      </td>
+    </tr>
+  ));
+
+  return (
+    <>
+
+      <Navbar />
+
+      <div class="p-4 sm:ml-64">
+
+        <div style={{ overflowX: "hidden" }}>
+          {/* Section: Design Block */}
+          <section className="text-center" style={{ backgroundColor: '#f5f6f7', paddingTop: 0, paddingBottom: 0 }}>
+            {/* Background image */}
+            {/* <div class="p-5 bg-image dashboard2-img"></div> */}
+            {/* Background image */}
+            <div className="col-md-12 m-auto">
+              <div className="card shadow-5-strong" style={{ marginTop: 0, background: 'hsla(0, 0%, 100%, 0.8)', backdropFilter: 'blur(30px)' }}>
+                <div className="container dashboard-2-container py-0">
+                  <div className="row d-flex justify-content-center my-0">
+                    {/* <h1 class="fw-bold mb-5 wow fadeInUp">DashBoard</h1> */}
 
 
 
-
-<div class="p-4 sm:ml-64">
-
+                    <div id="dashboard-2-column2" className=" dashboard-2-column2 px-0" style={{ display: '' }}>
 
 
-<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
-
-
-  <div class="w-full px-6 py-6 mx-auto">
-    {/* <!-- table 1 --> */}
-
-    <div class="flex flex-wrap -mx-3">
-      <div class="flex-none w-full max-w-full px-3">
-        <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-          <div class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-            <h6 class="dark:text-white">Prescriptions</h6>
-          </div>
-          <div class="flex-auto px-0 pt-0 pb-2">
-            <div class="p-0 overflow-x-auto">
-              <table class="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500">
-                <thead class="align-bottom">
-                  <tr>
-                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Name</th>
-                    <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Description</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Dose</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Date</th>
-                    <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <div class="flex px-2 py-1">
+                      <div class="flex items-center justify-between pt-8 px-8">
                         <div>
-                          <img src="../assets/img/team-2.jpg" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user1" />
+                          <h2 class="font-semibold text-gray-700 text-2xl" >Prescriptions</h2>
+                          <span class="text-xs text-gray-500">View prescriptions</span>
                         </div>
-                        <div class="flex flex-col justify-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">John Michael</h6>
-                          <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">john@creative-tim.com</p>
+                        <div class="flex items-center justify-between">
+                          <div class="ml-10 space-x-8 lg:ml-40">
+                            <button class="flex items-center gap-2 rounded-md bg-teal-400 px-4 py-2 text-sm font-semibold text-white focus:outline-none focus:ring hover:bg-teal-500" onClick={handleOpenModal}>
+                              <FontAwesomeIcon icon={faPlus} />
+
+                              Create
+                            </button>
+                            <Modal
+                              open={openModal}
+                              onClose={handleCloseModal}
+                              aria-labelledby="modal-modal-title"
+                              aria-describedby="modal-modal-description"
+                            >
+                              <Box sx={style}>
+                                <form class="max-w-sm mx-auto" onSubmit={handleCreatePrescription}>
+                                <div className="mb-5">
+                                    <label htmlFor="patient" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                      Select Provider
+                                    </label>
+                                    <select
+                                      id="userid"
+                                      name="userid"
+                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      value={formData.userid}
+                                      onChange={handleChange}
+                                      required
+                                    >
+                                      <option value="">Select a user</option>
+                                      {users.map(user => (
+                                        <option key={user.userid} value={user.userid}>
+                                          {user.username}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                  <div class="mb-5">
+                                    <label for="visit-type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                      Prescription Name
+                                    </label>
+                                    <input
+                                      type="text"
+                                      id="px-name"
+                                      name="pxName"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      placeholder="Check-Up"
+                                      value={formData.pxName}
+                                      onChange={handleChange}
+                                      required
+                                    />
+                                  </div>
+                                  <div class="mb-5">
+                                    <label for="appLocation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                      Dose
+                                    </label>
+                                    <input
+                                      type="text"
+                                      id="px-dose"
+                                      name="pxDose"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      placeholder="Check-Up"
+                                      value={formData.pxDose}
+                                      onChange={handleChange}
+                                      required
+                                    />
+                                  </div>
+                                  <div class="mb-5">
+                                    <label for="time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                      Frequency
+                                    </label>
+                                    <input
+                                      type="text"
+                                      id="px-frequency"
+                                      name="pxFrequency"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      value={formData.pxFrequency}
+                                      onChange={handleChange}
+                                      required
+                                    />
+                                  </div>
+                                  <div class="mb-5">
+                                    <label for="comments" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                      Quantity
+                                    </label>
+                                    <input
+                                      type="text"
+                                      id="px-quantity"
+                                      name="pxQuantity"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      placeholder="Any concerns..."
+                                      value={formData.pxQuantity}
+                                      onChange={handleChange}
+                                      required
+                                    />
+                                  </div>
+                                  <div class="mb-5">
+                                    <label for="comments" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                      Condition
+                                    </label>
+                                    <input
+                                      type="text"
+                                      id="px-condition"
+                                      name="pxCondition"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      placeholder="Any concerns..."
+                                      value={formData.pxCondition}
+                                      onChange={handleChange}
+                                      required
+                                    />
+                                  </div>
+                                  <div class="mb-5">
+                                    <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                      Date
+                                    </label>
+                                    <input
+                                      type="date"
+                                      id="date"
+                                      name="pxDate"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      value={formData.pxDate}
+                                      onChange={handleChange}
+                                      required
+                                    />
+                                  </div>
+                                  <button
+                                    type="submit"
+                                    class="text-white bg-teal-400 hover:bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-teal-400 dark:hover:bg-teal-500 dark:focus:ring-teal-600"
+                                  >
+                                    Submit
+                                  </button>
+                                </form>
+                                </Box>
+                            </Modal>
+                          </div>
                         </div>
                       </div>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">Manager</p>
-                      <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Organization</p>
-                    </td>
-                    <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                    </td>
-                    <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">23/04/18</span>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                    <button class="bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
-                     Accept
-                     </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <div class="flex px-2 py-1">
-                        <div>
-                          <img src="../assets/img/team-3.jpg" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user2" />
-                        </div>
-                        <div class="flex flex-col justify-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">Alexa Liras</h6>
-                          <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">alexa@creative-tim.com</p>
-                        </div>
+
+
+                      <div className="card-body dashboard-second-ca">
+                        {/* ======== main-wrapper start =========== */}
+                        <main className="main-wrapper" style={{}}>
+                          <section className="section" style={{ paddingTop: 10, paddingBottom: 20 }}>
+                            {/* <div className="container-fluid"> */}
+
+
+
+                            {/* =====================Order Table===================== */}
+                            <div className="row">
+                              <div className="col-lg-12">
+                                <div className="card-style mb-3">
+                                  <h3 className="text-start mb-3">  </h3>
+                                  <div class="overflow-y-hidden rounded-lg border">
+                                    <div class="overflow-x-auto">
+
+                                      <div className="table-wrapper table-responsive">
+                                        <table class="w-full">
+                                          <thead>
+                                            <tr class="bg-teal-400 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                                              <th class="px-3 py-3">
+                                                <h6>#</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Patient</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Provider</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Prescription Name</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Dose</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Frequency</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Quantity</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Condition</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Date</h6>
+                                              </th >
+                                              <th class="px-3 py-3">
+                                                <h6>Status</h6>
+                                              </th >
+                                              {/* <th>
+                                                <h6>Action</h6>
+                                            </th> */}
+                                            </tr>
+                                            {/* end table row*/}
+                                          </thead>
+                                          <tbody class="text-gray-500">
+
+                                            {prescriptionsJSX}
+
+
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                    {/* end table */}
+                                  </div>
+                                </div>
+                                {/* end card */}
+                              </div>
+                              {/* end col */}
+                            </div>
+
+
+                            {/* </div> */}
+
+                          </section>
+
+
+
+                        </main>
+
+
                       </div>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">Programator</p>
-                      <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Developer</p>
-                    </td>
-                    <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Offline</span>
-                    </td>
-                    <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">11/01/19</span>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                    <button class="bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
-                     Accept
-                     </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <div class="flex px-2 py-1">
-                        <div>
-                          <img src="../assets/img/team-4.jpg" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user3" />
-                        </div>
-                        <div class="flex flex-col justify-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">Laurent Perrier</h6>
-                          <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">laurent@creative-tim.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">Executive</p>
-                      <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Projects</p>
-                    </td>
-                    <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                    </td>
-                    <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">19/09/17</span>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                    <button class="bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
-                     Accept
-                     </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <div class="flex px-2 py-1">
-                        <div>
-                          <img src="../assets/img/team-3.jpg" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user4" />
-                        </div>
-                        <div class="flex flex-col justify-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">Michael Levi</h6>
-                          <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">michael@creative-tim.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">Programator</p>
-                      <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Developer</p>
-                    </td>
-                    <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                    </td>
-                    <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">24/12/08</span>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                    <button class="bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
-                     Accept
-                     </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <div class="flex px-2 py-1">
-                        <div>
-                          <img src="../assets/img/team-2.jpg" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user5" />
-                        </div>
-                        <div class="flex flex-col justify-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">Richard Gran</h6>
-                          <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">richard@creative-tim.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">Manager</p>
-                      <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Executive</p>
-                    </td>
-                    <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Offline</span>
-                    </td>
-                    <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                      <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">04/10/21</span>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                    <button class="bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
-                     Accept
-                     </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-2 align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                      <div class="flex px-2 py-1">
-                        <div>
-                          <img src="../assets/img/team-4.jpg" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user6" />
-                        </div>
-                        <div class="flex flex-col justify-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">Miriam Eric</h6>
-                          <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">miriam@creative-tim.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                      <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">Programtor</p>
-                      <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Developer</p>
-                    </td>
-                    <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                      <span class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Offline</span>
-                    </td>
-                    <td class="p-2 text-center align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                      <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">14/09/20</span>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                    <button class="bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
-                     Accept
-                     </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
+
+
+
+
         </div>
       </div>
-    </div>
 
 
-  </div>
-</main>
-</div>
 
 
-       </>
-    )
+    </>
+  )
 }
- 
+
 export default Prescriptions
- 

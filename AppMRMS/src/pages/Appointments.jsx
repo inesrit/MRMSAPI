@@ -48,17 +48,6 @@ function Appointments() {
 
   const [users, setUsers] = useState([]);
 
-  const navigate = useNavigate();
-
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
-
   const [openModal, setOpenModal] = useState(false);
   const [formData, setFormData] = useState({
     userid: '',
@@ -68,6 +57,16 @@ function Appointments() {
     appTime: '',
     appComments: ''
   });
+
+  const navigate = useNavigate();
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
 
 

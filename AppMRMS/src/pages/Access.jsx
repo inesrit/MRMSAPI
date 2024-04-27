@@ -11,7 +11,7 @@ import Navbar from '../components/Navbar'
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  faFileAlt, faUser, faSignOutAlt, faChevronLeft, faBars, faPlus,
+  faFileAlt, faUser, faSignOutAlt, faChevronLeft, faBars, faPlus, faCircleXmark,
   faCog, faComments, faSearch, faCalendarCheck, faReceipt, faFileMedical, faPencil, faTrashCan, faCloudUpload, faCircleCheck
 }
   from "@fortawesome/free-solid-svg-icons"
@@ -81,7 +81,6 @@ function Access() {
 
     } catch (error) {
       console.error('Error updating acesss status:', error);
-      // Handle error
     }
   };
 
@@ -100,7 +99,15 @@ function Access() {
       });
     } catch (error) {
       console.error('Error updating access status to DENIED:', error);
-      // Handle error
+    }
+  };
+
+  const deleteAccess = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/v1/access-requests/revoke-access?requestId=${id}`);
+      setAccess(prevAccess => prevAccess.filter(access => access.id !== id));
+    } catch (error) {
+      console.error('Error deleting access', error);
     }
   };
 
@@ -112,6 +119,10 @@ function Access() {
 
   const handleUpdateStatusToDenied = async (id) => {
     await updateAccessStatusToDenied(id, setAccess);
+  };
+
+  const handleDeleteAccess = async (id) => {
+    await deleteAccess(id);
   };
 
   const accessJSX = access.map((access, index) => (
@@ -137,6 +148,10 @@ function Access() {
             <FontAwesomeIcon icon={faCircleCheck} />
           </button>
           <button className="text-success dasboard-action-icon" onClick={() => handleUpdateStatusToDenied(access.id)}>
+            {/* <i className="lni lni-trash-can" /> */}
+            <FontAwesomeIcon icon={faCircleXmark} />
+          </button>
+          <button className="text-success dasboard-action-icon" onClick={() => handleDeleteAccess(access.id)}>
             {/* <i className="lni lni-trash-can" /> */}
             <FontAwesomeIcon icon={faTrashCan} />
           </button>

@@ -6,156 +6,229 @@
  * @author Ines Rita
  */
 
-
-
 import Pic from './../assets/Medical-health-logo-design-on-transparent-background-PNG.png'
-import blood from './../assets/rain.png'
-import energy from './../assets/lighting.png'
-import syringe from './../assets/syringe.png'
-import pill from './../assets/pill.png'
-import heart from './../assets/cardiogram.png'
-import Navbar from './../components/Navbar'
+import Navbar from '../components/Navbar'
+import { useState, useEffect } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faFileAlt, faUser, faSignOutAlt, faChevronLeft, faBars, faPlus, faCircleXmark,
+  faCog, faComments, faSearch, faCalendarCheck, faReceipt, faFileMedical, faPencil, faTrashCan, faCloudUpload, faCircleCheck
+}
+  from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 function MedicalRecords() {
-    return (
-        <>
-        
-        
-        <Navbar />
+
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const [medicalRecords, setMedicalRecords] = useState([]);
+
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const fetchMedicalRecords = async () => {
+      try {
+         const patientIdCookie = document.cookie
+         .split('; ')
+         .find(row => row.startsWith('patientId='))
+         .split('=')[1];
+        const response = await axios.get(`http://localhost:8080/api/v1/medical-record/all-patient-records?patientId=${patientIdCookie}`, {
+          withCredentials: true
+        });
+        setMedicalRecords(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching medical records:', error);
+      }
+    };
+
+    fetchMedicalRecords();
+  }, []);
 
 
 
 
+  const medicalRecordsJSX = medicalRecords.map((medical_record, index) => (
+    <tr key={index} style={{ border: '' }}>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{index + 1}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{medical_record.patient.patientName}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{medical_record.user.username}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{medical_record.recordName}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{medical_record.recordType}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{medical_record.recordDate}</p>
+      </td>
+      <td class="border-b border-gray-200 bg-white px-3 py-3 text-lg">
+        <p>{medical_record.recordResult}</p>
+      </td>
+    </tr>
+  ));
+
+  return (
+    <>
+
+      <Navbar />
+
+      <div class="p-4 sm:ml-64">
+
+        <div style={{ overflowX: "hidden" }}>
+          {/* Section: Design Block */}
+          <section className="text-center" style={{ backgroundColor: '#f5f6f7', paddingTop: 0, paddingBottom: 0 }}>
+            {/* Background image */}
+            {/* <div class="p-5 bg-image dashboard2-img"></div> */}
+            {/* Background image */}
+            <div className="col-md-12 m-auto">
+              <div className="card shadow-5-strong" style={{ marginTop: 0, background: 'hsla(0, 0%, 100%, 0.8)', backdropFilter: 'blur(30px)' }}>
+                <div className="container dashboard-2-container py-0">
+                  <div className="row d-flex justify-content-center my-0">
+                    {/* <h1 class="fw-bold mb-5 wow fadeInUp">DashBoard</h1> */}
 
 
-<div class="p-4 sm:ml-64">
+
+                    <div id="dashboard-2-column2" className=" dashboard-2-column2 px-0" style={{ display: '' }}>
+
+
+                      <div class="flex items-center justify-between pt-8 px-8">
+                        <div>
+                          <h2 class="font-semibold text-gray-700 text-2xl" >Medical Records</h2>
+                          <span class="text-xs text-gray-500">View medical records</span>
+                        </div>
+                      </div>
+
+
+                      <div className="card-body dashboard-second-ca">
+                        {/* ======== main-wrapper start =========== */}
+                        <main className="main-wrapper" style={{}}>
+                          <section className="section" style={{ paddingTop: 10, paddingBottom: 20 }}>
+                            {/* <div className="container-fluid"> */}
 
 
 
+                            {/* =====================Order Table===================== */}
+                            <div className="row">
+                              <div className="col-lg-12">
+                                <div className="card-style mb-3">
+                                  <h3 className="text-start mb-3">  </h3>
+                                  <div class="overflow-y-hidden rounded-lg border">
+                                    <div class="overflow-x-auto">
+
+                                      <div className="table-wrapper table-responsive">
+                                        <table class="w-full">
+                                          <thead>
+                                            <tr class="bg-teal-400 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                                              <th class="px-3 py-3">
+                                                <h6>#</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Patient</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Provider</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Record Name</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Record Type</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Date</h6>
+                                              </th>
+                                              <th class="px-3 py-3">
+                                                <h6>Record Result</h6>
+                                              </th>
+                                              {/* <th>
+                                                <h6>Action</h6>
+                                            </th> */}
+                                            </tr>
+                                            {/* end table row*/}
+                                          </thead>
+                                          <tbody class="text-gray-500">
+
+                                            {medicalRecordsJSX}
 
 
-
-
-
-<div class="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
-                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-bold leading-none text-gray-900">Medical Records</h3>
-                        <a href="#" class="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg inline-flex items-center p-2">
-                        View all
-                        </a>
-                     </div>
-                     <div class="flow-root">
-                        <ul role="list" class="divide-y divide-gray-200">
-                           <li class="py-3 sm:py-4">
-                              <div class="flex items-center space-x-4">
-                                 <div class="flex-shrink-0">
-                                    <img class="h-8 w-8 rounded-full" src="https://demo.themesberg.com/windster/images/users/neil-sims.png" alt="Neil image"/>
-                                 </div>
-                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-900 truncate">
-                                       Neil Sims
-                                    </p>
-                                    <p class="text-sm text-gray-500 truncate">
-                                       <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="17727a767e7b57607e7973646372653974787a">[email&#160;protected]</a>
-                                    </p>
-                                 </div>
-                                 <div class="inline-flex items-center text-base font-semibold text-gray-900">
-                                    $320
-                                 </div>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                    {/* end table */}
+                                  </div>
+                                </div>
+                                {/* end card */}
                               </div>
-                           </li>
-                           <li class="py-3 sm:py-4">
-                              <div class="flex items-center space-x-4">
-                                 <div class="flex-shrink-0">
-                                    <img class="h-8 w-8 rounded-full" src="https://demo.themesberg.com/windster/images/users/bonnie-green.png" alt="Neil image"/>
-                                 </div>
-                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-900 truncate">
-                                       Bonnie Green
-                                    </p>
-                                    <p class="text-sm text-gray-500 truncate">
-                                       <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d4b1b9b5bdb894a3bdbab0a7a0b1a6fab7bbb9">[email&#160;protected]</a>
-                                    </p>
-                                 </div>
-                                 <div class="inline-flex items-center text-base font-semibold text-gray-900">
-                                    $3467
-                                 </div>
-                              </div>
-                           </li>
-                           <li class="py-3 sm:py-4">
-                              <div class="flex items-center space-x-4">
-                                 <div class="flex-shrink-0">
-                                    <img class="h-8 w-8 rounded-full" src="https://demo.themesberg.com/windster/images/users/michael-gough.png" alt="Neil image"/>
-                                 </div>
-                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-900 truncate">
-                                       Michael Gough
-                                    </p>
-                                    <p class="text-sm text-gray-500 truncate">
-                                       <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="57323a363e3b17203e3933242332257934383a">[email&#160;protected]</a>
-                                    </p>
-                                 </div>
-                                 <div class="inline-flex items-center text-base font-semibold text-gray-900">
-                                    $67
-                                 </div>
-                              </div>
-                           </li>
-                           <li class="py-3 sm:py-4">
-                              <div class="flex items-center space-x-4">
-                                 <div class="flex-shrink-0">
-                                    <img class="h-8 w-8 rounded-full" src="https://demo.themesberg.com/windster/images/users/thomas-lean.png" alt="Neil image"/>
-                                 </div>
-                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-900 truncate">
-                                       Thomes Lean
-                                    </p>
-                                    <p class="text-sm text-gray-500 truncate">
-                                       <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="284d45494144685f41464c5b5c4d5a064b4745">[email&#160;protected]</a>
-                                    </p>
-                                 </div>
-                                 <div class="inline-flex items-center text-base font-semibold text-gray-900">
-                                    $2367
-                                 </div>
-                              </div>
-                           </li>
-                           <li class="pt-3 sm:pt-4 pb-0">
-                              <div class="flex items-center space-x-4">
-                                 <div class="flex-shrink-0">
-                                    <img class="h-8 w-8 rounded-full" src="https://demo.themesberg.com/windster/images/users/lana-byrd.png" alt="Neil image"/>
-                                 </div>
-                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-900 truncate">
-                                       Lana Byrd
-                                    </p>
-                                    <p class="text-sm text-gray-500 truncate">
-                                       <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a2c7cfc3cbcee2d5cbccc6d1d6c7d08cc1cdcf">[email&#160;protected]</a>
-                                    </p>
-                                 </div>
-                                 <div class="inline-flex items-center text-base font-semibold text-gray-900">
-                                    $367
-                                 </div>
-                              </div>
-                           </li>
-                        </ul>
-                     </div>
+                              {/* end col */}
+                            </div>
+
+
+                            {/* </div> */}
+
+                          </section>
+
+
+
+                        </main>
+
+
+                      </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
                   </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
 
 
 
-
-
-
-</div>
-
-
+        </div>
+      </div>
 
 
 
 
-        </>
-    )
+    </>
+  )
 }
- 
+
 export default MedicalRecords
- 

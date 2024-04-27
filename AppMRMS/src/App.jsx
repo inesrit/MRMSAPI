@@ -11,7 +11,9 @@ import Patientlist from './pages/HPPatientlist.jsx'
 import Appointments from './pages/Appointments.jsx'
 import HPAppointments from './pages/HPAppointments.jsx'
 import Prescriptions from './pages/Prescriptions.jsx'
+import HPPrescriptions from './pages/HPPrescriptions.jsx'
 import MedicalRecords from './pages/MedicalRecords.jsx'
+import HPMedicalRecords from './pages/HPMedicalRecords.jsx'
 import Notfound from './pages/Notfound.jsx'
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
@@ -37,7 +39,9 @@ function App() {
         <Route path="/appointments" element={<Appointments />} />
         <Route path="/hpappointments" element={<HPAppointments />} />
         <Route path="/prescriptions" element={<Prescriptions />} />
+        <Route path="/hpprescriptions" element={<HPPrescriptions />} />
         <Route path="/medical-records" element={<MedicalRecords />} />
+        <Route path="/hp-medical-records" element={<HPMedicalRecords />} />
         <Route path="/patientlist" element={<Patientlist />} />
         <Route path="/*" element={<Notfound />} />
       </Routes>

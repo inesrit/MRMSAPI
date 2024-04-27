@@ -45,6 +45,11 @@ function HPAccess() {
     const [patients, setPatients] = useState([]);
 
     const navigate = useNavigate();
+    
+    const [openModal, setOpenModal] = useState(false);
+    const [formData, setFormData] = useState({
+        selectedPatientId: null
+    });
 
     const handleOpenModal = () => {
         setOpenModal(true);
@@ -55,10 +60,7 @@ function HPAccess() {
     };
 
 
-    const [openModal, setOpenModal] = useState(false);
-    const [formData, setFormData] = useState({
-        selectedPatientId: null
-    });
+
 
 
 

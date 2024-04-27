@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Pic from './../assets/Medical-health-logo-design-on-transparent-background-PNG.png'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -20,6 +20,8 @@ import {
  */
 function Navbar() {
 
+    const [patient, setPatient] = useState([]);
+
     const navigate = useNavigate();
 
     async function logOut(event) {
@@ -27,7 +29,8 @@ function Navbar() {
         try {
             await axios.post("http://localhost:8080/api/v1/patient/logout", {
             }).then((res) => {
-                document.cookie = 'patientDetails=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'patientId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                 console.log(res.data);
             }, fail => {
                 console.error(fail); // Error!
@@ -38,6 +41,26 @@ function Navbar() {
             alert(err);
         }
     }
+
+    useEffect(() => {
+        const fetchPatient = async () => {
+          try {
+            const patientIdCookie = document.cookie
+              .split('; ')
+              .find(row => row.startsWith('patientId='))
+              .split('=')[1];
+            const response = await axios.get(`http://localhost:8080/api/v1/patient/patient-details?patientId=${patientIdCookie}`, {
+              withCredentials: true
+            });
+            setPatient(response.data);
+            console.log(response.data);
+          } catch (error) {
+            console.error('Error fetching appointments:', error);
+          }
+        };
+    
+        fetchPatient();
+      }, []);
 
     let [profileDivOpen, setprofileDivOpen] = useState(false)
 
@@ -93,7 +116,7 @@ function Navbar() {
                                                     <img src="/images/profile-image.png" alt />
                                                 </div>
                                                 <div className="profile-dropdown-username">
-                                                    <h6 className="fw-500 ">Adam Joe</h6>
+                                                    <h6 className="fw-500 ">{patient.patientName}</h6>
                                                     {/* <p>Admin</p> */}
                                                 </div>
                                             </div>
@@ -107,8 +130,8 @@ function Navbar() {
                                             <div className="author-info flex items-center justify-content-center !p-1">
 
                                                 <div className="content text-center">
-                                                    <h4 className="text-medium" style={{ fontSize: 16 }}>Adam Joe</h4>
-                                                    <a className href="#" style={{ fontSize: 14 }}>Email@gmail.com</a>
+                                                    <h4 className="text-medium" style={{ fontSize: 16 }}>{patient.patientName}</h4>
+                                                    <a className href="#" style={{ fontSize: 14 }}>{patient.email}</a>
                                                 </div>
                                             </div>
                                         </li>
