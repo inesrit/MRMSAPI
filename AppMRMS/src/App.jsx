@@ -7,13 +7,14 @@ import HPdashboard from './pages/HPdashboard.jsx'
 import Access from './pages/Access.jsx'
 import HPAccess from './pages/HPAccess.jsx'
 import Settings from './pages/Settings.jsx'
-import Patientlist from './pages/HPPatientlist.jsx'
+import HPPatientlist from './pages/HPPatientlist.jsx'
 import Appointments from './pages/Appointments.jsx'
 import HPAppointments from './pages/HPAppointments.jsx'
 import Prescriptions from './pages/Prescriptions.jsx'
 import HPPrescriptions from './pages/HPPrescriptions.jsx'
 import MedicalRecords from './pages/MedicalRecords.jsx'
 import HPMedicalRecords from './pages/HPMedicalRecords.jsx'
+import HPPatientDashboard from './pages/HPPatientDashboard.jsx'
 import Notfound from './pages/Notfound.jsx'
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
@@ -42,7 +43,8 @@ function App() {
         <Route path="/hpprescriptions" element={<HPPrescriptions />} />
         <Route path="/medical-records" element={<MedicalRecords />} />
         <Route path="/hp-medical-records" element={<HPMedicalRecords />} />
-        <Route path="/patientlist" element={<Patientlist />} />
+        <Route path="/hppatientlist" element={<HPPatientlist />} />
+        <Route path="/hp-patient-dashboard" element={<HPPatientDashboard />} />
         <Route path="/*" element={<Notfound />} />
       </Routes>
     </>

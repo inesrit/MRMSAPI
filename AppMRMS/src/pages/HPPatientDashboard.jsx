@@ -4,11 +4,13 @@ import energy from './../assets/lighting.png'
 import syringe from './../assets/syringe.png'
 import pill from './../assets/pill.png'
 import heart from './../assets/cardiogram.png'
-import Navbar from './../components/Navbar'
+import Navbar from './../components/HPNavbar'
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faChartPie, faFileAlt, faShoppingBasket, faUser, faSignOutAlt, faChevronLeft, faBars,
@@ -20,7 +22,10 @@ import {
  * 
  * @author Ines Rita
  */
-function Patientdashboard() {
+function HPPatientdashboard() {
+
+    const location = useLocation();
+    const patientid = location.state.id;
 
   const [patient, setPatient] = useState([]);
 
@@ -31,33 +36,26 @@ function Patientdashboard() {
   const [medicalRecords, setMedicalRecords] = useState([]);
 
   useEffect(() => {
-    const fetchPatient = async () => {
-      try {
-        const patientIdCookie = document.cookie
-          .split('; ')
-          .find(row => row.startsWith('patientId='))
-          .split('=')[1];
-        const response = await axios.get(`http://localhost:8080/api/v1/patient/patient-details?patientId=${patientIdCookie}`, {
-          withCredentials: true
-        });
-        setPatient(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching appointments:', error);
-      }
-    };
+    async function fetchPatientDetails() {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/v1/patient/patient-details?patientId=${patientid}`, {
+                withCredentials: true
+            });
+            const patientData = response.data;
+            console.log(response.data)
+            setPatient(response.data);
+        } catch (err) {
+            console.error("Error fetching patient details:", err);
+        }
+    }
+    fetchPatientDetails();
+}, [patientid]);
 
-    fetchPatient();
-  }, []);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const patientIdCookie = document.cookie
-          .split('; ')
-          .find(row => row.startsWith('patientId='))
-          .split('=')[1];
-        const response = await axios.get(`http://localhost:8080/api/v1/appointment/all-patient-appointments?patientId=${patientIdCookie}`, {
+        const response = await axios.get(`http://localhost:8080/api/v1/appointment/all-patient-appointments?patientId=${patientid}`, {
           withCredentials: true
         });
         setAppointments(response.data);
@@ -68,16 +66,12 @@ function Patientdashboard() {
     };
 
     fetchAppointments();
-  }, []);
+  }, [patientid]);
 
   useEffect(() => {
     const fetchPrescriptions = async () => {
       try {
-        const patientIdCookie = document.cookie
-          .split('; ')
-          .find(row => row.startsWith('patientId='))
-          .split('=')[1];
-        const response = await axios.get(`http://localhost:8080/api/v1/prescription/all-patient-prescriptions?patientId=${patientIdCookie}`, {
+        const response = await axios.get(`http://localhost:8080/api/v1/prescription/all-patient-prescriptions?patientId=${patientid}`, {
           withCredentials: true
         });
         setPrescriptions(response.data);
@@ -88,16 +82,12 @@ function Patientdashboard() {
     };
 
     fetchPrescriptions();
-  }, []);
+  }, [patientid]);
 
   useEffect(() => {
     const fetchMedicalRecords = async () => {
       try {
-        const patientIdCookie = document.cookie
-          .split('; ')
-          .find(row => row.startsWith('patientId='))
-          .split('=')[1];
-        const response = await axios.get(`http://localhost:8080/api/v1/medical-record/all-patient-records?patientId=${patientIdCookie}`, {
+        const response = await axios.get(`http://localhost:8080/api/v1/medical-record/all-patient-records?patientId=${patientid}`, {
           withCredentials: true
         });
         setMedicalRecords(response.data);
@@ -108,7 +98,7 @@ function Patientdashboard() {
     };
 
     fetchMedicalRecords();
-  }, []);
+  }, [patientid]);
 
 
   const lastThreeAppointments = appointments.slice(-2);
@@ -284,7 +274,7 @@ function Patientdashboard() {
                                   {/* <h3 className="text-start mb-3"> Appointments </h3> */}
                                   <div className="row justify-content-between mb-3">
                                     <h3 className="text-start mb-0 dashboard-profile-heading"> Appointment </h3>
-                                    <a href="/appointments" className="btn btn-custom btn-inline mb-0 dashboard-profile-btn">Browse All</a>
+                                    {/* <a href="/appointments" className="btn btn-custom btn-inline mb-0 dashboard-profile-btn">Browse All</a> */}
                                   </div>
 
                                   <div className="table-wrapper table-responsive">
@@ -330,7 +320,7 @@ function Patientdashboard() {
                                 <div className="card-style mb-3  dashboard-profile-card">
                                   <div className="row justify-content-between mb-3">
                                     <h4 className="text-start mb-0 dashboard-profile-heading"> Medical Records </h4>
-                                    <a href="/medical-records" className="btn btn-custom btn-inline mb-0 dashboard-profile-btn">Browse All</a>
+                                    {/* <a href="/medical-records" className="btn btn-custom btn-inline mb-0 dashboard-profile-btn">Browse All</a> */}
                                   </div>
                                   <div className="table-wrapper table-responsive" style={{ width: '100%' }}>
                                     <table className="table">
@@ -364,7 +354,7 @@ function Patientdashboard() {
                                 <div className="card-style mb-3 dashboard-profile-card">
                                   <div className="row justify-content-between mb-3">
                                     <h4 className="text-start mb-0 dashboard-profile-heading"> Prescriptions </h4>
-                                    <a href="/prescriptions" className="btn btn-custom btn-inline mb-0 dashboard-profile-btn">Browse All</a>
+                                    {/* <a href="/prescriptions" className="btn btn-custom btn-inline mb-0 dashboard-profile-btn">Browse All</a> */}
                                   </div>
 
                                   <div className="table-wrapper table-responsive">
@@ -444,4 +434,4 @@ function Patientdashboard() {
   )
 }
 
-export default Patientdashboard
+export default HPPatientdashboard

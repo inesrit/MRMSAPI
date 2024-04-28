@@ -31,7 +31,7 @@ function HPSignin() {
         } else if (response.data.message === "Login Successful") {
             const userId = response.data.user.userid;
             document.cookie = `userId=${userId}`;
-            navigate('/hpdashboard');
+            navigate('/hppatientlist');
         } else {
             alert("Incorrect Email or Password");
         }

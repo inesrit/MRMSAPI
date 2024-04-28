@@ -407,7 +407,7 @@ function HPPrescriptions() {
                                                             Create
                                                         </button>
                                                         <Modal
-                                                            openModal={openModal}
+                                                            open={openModal}
                                                             onClose={handleCloseModal}
                                                             aria-labelledby="modal-modal-title"
                                                             aria-describedby="modal-modal-description"
