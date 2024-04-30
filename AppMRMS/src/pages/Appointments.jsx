@@ -84,7 +84,7 @@ function Appointments() {
       const userId = parseInt(formData.userid);
       // Prepare request body
       const requestBody = {
-        patientId: patientId, // or simply patientId,
+        patientId: patientId,
         userId: userId,
         visitType: formData.visitType,
         appLocation: formData.appLocation,
@@ -94,19 +94,33 @@ function Appointments() {
       };
 
       console.log(requestBody)
+
       // Send POST request to create appointment
-      await axios.post('http://localhost:8080/api/v1/appointment/create', requestBody, {
+      const response = await axios.post('http://localhost:8080/api/v1/appointment/create', requestBody, {
         withCredentials: true
       });
-      // Close modal after successful submission
       
+
+      // Close modal after successful submission
       handleCloseModal();
 
     } catch (error) {
       console.error('Error creating appointment:', error);
-      // Handle error
+      if (error.response && error.response.data ) {
+        const errorMessage = error.response.data;
+        if (errorMessage === "Invalid appointment time") {
+          alert("Invalid appointment time. Appointments can only be booked between 9am-5pm.");
+        } else if (errorMessage === "Overlapping appointment found") {
+          const availableTimesResponse = await axios.get(`http://localhost:8080/api/v1/appointment/get-user-available-times?userId=${formData.userid}&date=${formData.appDate}`);
+          const availableTimes = availableTimesResponse.data;
+          alert(`Overlapping appointment found. These are the available times: ${availableTimes.join(', ')}`);
+        }
+      } else {
+        alert("An unexpected error occurred while creating the appointment. Please try again later.");
+      }
     }
-  };
+};
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
