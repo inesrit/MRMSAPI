@@ -113,7 +113,7 @@ function Navbar() {
                                         <div className="profile-info" >
                                             <div className="info">
                                                 <div className="image">
-                                                    <img src="/images/profile-image.png" alt />
+                                                    <img src="" alt />
                                                 </div>
                                                 <div className="profile-dropdown-username">
                                                     <h6 className="fw-500 ">{patient.patientName}</h6>
