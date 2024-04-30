@@ -1,7 +1,8 @@
 # MRMSAPI
 Medical Records Management System
 
-![Screenshot 2024-04-30 at 13.11.02.png](..%2F..%2F..%2F..%2FDocuments%2FScreenshot%202024-04-30%20at%2013.11.02.png)
+![patientdashboard.png](patientdashboard.png)
+
 ## Overview
 This is a web-based healthcare system designed to streamline the management of patient medical records. The system allows patients to schedule appointments, view their medical history, and communicate with healthcare providers. Healthcare providers can manage appointments, prescriptions, and medical records for their patients.
 
