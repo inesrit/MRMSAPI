@@ -20,20 +20,23 @@ This is a web-based healthcare system designed to streamline the management of p
 - **API Integration:** Axios
 - 
 ## Deployed Server
-- **URL:**
+- **API Backend URL:** https://mrms-96547282c657.herokuapp.com/api/v1
+- **ReactApp Frontend URL:** https://appmrms-49191739e0bc.herokuapp.com/signup
 
-## Local Setup
+## Remote Setup
 1. Clone the repository: **git clone <repository-url>**
 2. Navigate to the project directory: **cd MRMSAPI**
 3. Install dependencies:
 - Frontend: **cd AppMRMS && npm install**
 - Backend: **./mvnw install**
-4. Configure database connection in **application.properties** file.
-5. Run the backend server: **./mvnw spring-boot:run**
-6. Run the frontend server: **cd AppMRMS && npm start**
+4. Configure database connection to local MySQL database in **application.properties** file.
+5. Modify src/main/java/com/example/MRMSAPI/Config/SecurityConfig.java corsConfigurationSource method allowed origins to local server.
+5. Modify AppMRMS/src/pages: **Modify all files API calls to local react server**
+6. Run the backend server: **./mvnw spring-boot:run**
+7. Run the frontend server: **cd AppMRMS && npm start**
 
 ## Using it
-1. Register as a patient or healthcare provider from **/signup**
-2. Log in to access the system from **/signin**
+1. Register as a patient or healthcare provider from **/signup or /hpsignup**
+2. Log in to access the system from **/signin or /hpsignin**
 3. From the landing page, use the naivgation bar links to access other pages and use the application
 
