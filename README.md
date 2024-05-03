@@ -4,7 +4,7 @@ Medical Records Management System
 ![patientdashboard.png](patientdashboard.png)
 
 ## Overview
-This is a web-based healthcare system designed to streamline the management of patient medical records. The system allows patients to schedule appointments, view their medical history, and communicate with healthcare providers. Healthcare providers can manage appointments, prescriptions, and medical records for their patients.
+This is a web-based healthcare system designed to streamline the management of patient medical records. The system allows patients to schedule appointments, view their medical history, and communicate with healthcare providers. Healthcare providers can manage appointments, prescriptions, and medical records for their patientss.
 
 ## Features
 - **Appointment Management:** Patients can request appointments. Healthcare providers can view and manage appointments for their patients.
