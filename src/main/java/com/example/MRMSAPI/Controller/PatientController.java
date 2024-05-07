@@ -2,10 +2,13 @@ package com.example.MRMSAPI.Controller;
 
 
 import com.example.MRMSAPI.Entity.User;
+import com.example.MRMSAPI.Repo.PatientRepo;
 import com.example.MRMSAPI.Service.PatientService;
 import com.example.MRMSAPI.Dto.LoginDTO;
 import com.example.MRMSAPI.Entity.Patient;
 import com.example.MRMSAPI.response.LoginResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +31,12 @@ public class PatientController {
     @Autowired
     private HttpSession session;
 
+    @Autowired
+    HttpServletResponse response;
+
+    @Autowired
+    private PatientRepo patientRepo;
+
     @PostMapping(path = "/save")
     public String savePatient(@RequestBody Patient patient)
     {
@@ -44,6 +53,11 @@ public class PatientController {
     @PostMapping(path = "/logout")
     public ResponseEntity<String> logoutPatient() {
         session.invalidate(); // Invalidate session upon logout
+        Cookie cookiepatient = new Cookie("patient", null);
+        cookiepatient.setHttpOnly(true);
+        cookiepatient.setSecure(false);
+        cookiepatient.setMaxAge(0);
+        response.addCookie(cookiepatient);
         return ResponseEntity.ok("Logout Successful");
     }
 
@@ -59,26 +73,21 @@ public class PatientController {
 
     @PutMapping(path = "/update")
     public ResponseEntity<String> updatePatientDetails(@RequestBody Patient updatedPatient) {
-        Patient loggedPatient = (Patient) session.getAttribute("loggedInPatient");
-        if (loggedPatient != null) {
-            patientService.updatePatientDetails(loggedPatient, updatedPatient);
+            patientService.updatePatientDetails(updatedPatient);
             return ResponseEntity.ok("Patient details updated successfully");
-        } else {
-            return ResponseEntity.badRequest().body("Patient not logged in or unauthorized to perform this action");
-        }
     }
 
 
     @DeleteMapping(path = "/delete")
-    public ResponseEntity<String> deletePatient() {
-        Patient loggedInPatient = (Patient) session.getAttribute("loggedInPatient");
+    public ResponseEntity<String> deletePatient(@RequestParam int patientId) {
+        Patient loggedInPatient = patientService.getPatientDetailsById(patientId);
         if (loggedInPatient != null) {
             patientService.deletePatient(loggedInPatient);
             session.invalidate();
             return ResponseEntity.ok("Patients details deleted successfully");
 
         } else {
-            return ResponseEntity.badRequest().body("Patient not logged in or unauthorized to perform this action");
+            return ResponseEntity.badRequest().body("Patient not found");
         }
     }
 

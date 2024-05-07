@@ -9,6 +9,7 @@ import com.example.MRMSAPI.Entity.Appointment;
 import com.example.MRMSAPI.Repo.AppointmentRepo;
 import com.example.MRMSAPI.Repo.PatientRepo;
 import com.example.MRMSAPI.response.LoginResponse;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -104,19 +105,21 @@ public class PatientService {
     }
 
 
-    public void updatePatientDetails(Patient loggedInPatient, Patient updatedPatient) {
-        loggedInPatient.setPatientName(updatedPatient.getPatientName());
-        loggedInPatient.setEmail(updatedPatient.getEmail());
-        loggedInPatient.setPassword(this.passwordEncoder.encode(updatedPatient.getPassword()));
-        loggedInPatient.setAddress(updatedPatient.getAddress());
-        loggedInPatient.setContactNumber(updatedPatient.getContactNumber());
-        loggedInPatient.setBirthDate(updatedPatient.getBirthDate());
-        loggedInPatient.setWeight(updatedPatient.getWeight());
-        loggedInPatient.setHeight(updatedPatient.getHeight());
-        loggedInPatient.setHealthcareId(updatedPatient.getHealthcareId());
-        loggedInPatient.setEmergencyContactName(updatedPatient.getEmergencyContactName());
-        loggedInPatient.setEmergencyContactNumber(updatedPatient.getEmergencyContactNumber());
-        patientRepo.save(loggedInPatient);
+    public void updatePatientDetails(Patient updatedPatient) {
+        Patient existingPatient = patientRepo.findById(updatedPatient.getPatientid())
+                .orElseThrow(() -> new EntityNotFoundException("patient  not found"));
+        existingPatient.setPatientName(updatedPatient.getPatientName());
+        existingPatient.setEmail(updatedPatient.getEmail());
+        existingPatient.setPassword(this.passwordEncoder.encode(updatedPatient.getPassword()));
+        existingPatient.setAddress(updatedPatient.getAddress());
+        existingPatient.setContactNumber(updatedPatient.getContactNumber());
+        existingPatient.setBirthDate(updatedPatient.getBirthDate());
+        existingPatient.setWeight(updatedPatient.getWeight());
+        existingPatient.setHeight(updatedPatient.getHeight());
+        existingPatient.setHealthcareId(updatedPatient.getHealthcareId());
+        existingPatient.setEmergencyContactName(updatedPatient.getEmergencyContactName());
+        existingPatient.setEmergencyContactNumber(updatedPatient.getEmergencyContactNumber());
+        patientRepo.save(existingPatient);
     }
 
 

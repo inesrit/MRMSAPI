@@ -4,6 +4,8 @@ import com.example.MRMSAPI.Service.UserService;
 import com.example.MRMSAPI.Dto.LoginDTO;
 import com.example.MRMSAPI.Entity.User;
 import com.example.MRMSAPI.response.LoginResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ public class UserController {
     @Autowired
     private HttpSession session;
 
+    @Autowired
+    HttpServletResponse response;
+
 
     @PostMapping(path = "/save")
     public String saveUser(@RequestBody User user)
@@ -42,6 +47,11 @@ public class UserController {
     @PostMapping(path = "/logout")
     public ResponseEntity<String> logoutUser() {
         session.invalidate(); // Invalidate session upon logout
+        Cookie cookieuser = new Cookie("user", null);
+        cookieuser.setHttpOnly(true);
+        cookieuser.setSecure(false);
+        cookieuser.setMaxAge(0);
+        response.addCookie(cookieuser);
         return ResponseEntity.ok("Logout Successful");
     }
 
