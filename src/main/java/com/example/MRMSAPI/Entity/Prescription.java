@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
+/*
+Prescription Entity class
+*/
+
 @Entity
 @Table(name="prescription")
 public class Prescription {

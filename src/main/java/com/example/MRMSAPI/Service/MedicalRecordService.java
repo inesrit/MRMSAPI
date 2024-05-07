@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/*
+Medical record service class
+*/
+
 @Service
 public class MedicalRecordService {
 
@@ -42,13 +46,13 @@ public class MedicalRecordService {
         MedicalRecord existingMedicalRecord = medicalRecordRepo.findById(updatedMedicalRecord.getMedicalrecordid())
                 .orElseThrow(() -> new EntityNotFoundException("Medical record not found"));
 
-        // Update the fields of the existing medical record with the new values
+
         existingMedicalRecord.setRecordDate(updatedMedicalRecord.getRecordDate());
         existingMedicalRecord.setRecordName(updatedMedicalRecord.getRecordName());
         existingMedicalRecord.setRecordType(updatedMedicalRecord.getRecordType());
         existingMedicalRecord.setRecordResult(updatedMedicalRecord.getRecordResult());
 
-        // Save the updated medical record back to the database
+
         medicalRecordRepo.save(existingMedicalRecord);
     }
 
@@ -56,7 +60,7 @@ public class MedicalRecordService {
         try {
             medicalRecordRepo.deleteByMedicalRecordId(medicalRecordId);
         } catch (EmptyResultDataAccessException e) {
-            // Handle case where the medical record with the specified ID does not exist
+
             throw new EntityNotFoundException("Medical record with ID " + medicalRecordId + " not found");
         } catch (Exception e) {
 

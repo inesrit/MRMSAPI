@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.*;
 import java.util.*;
 
+/*
+Appointment rest API controller
+*/
 @RestController
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("api/v1/appointment")

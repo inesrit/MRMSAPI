@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/*
+User or healthcare provider Data JPA repository class
+*/
+
 @EnableJpaRepositories
 @Repository
 public interface UserRepo extends JpaRepository<User, Integer> {

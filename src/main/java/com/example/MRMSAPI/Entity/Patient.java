@@ -6,6 +6,10 @@ import org.hibernate.annotations.FetchMode;
 
 import java.util.*;
 
+/*
+Patient Entity class
+*/
+
 @Entity
 @Table(name="patient")
 public class Patient {

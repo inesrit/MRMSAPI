@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+/*
+Access Request Data JPA repository class
+*/
 
 @EnableJpaRepositories
 @Repository

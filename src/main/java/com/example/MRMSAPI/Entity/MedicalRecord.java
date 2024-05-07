@@ -2,6 +2,9 @@ package com.example.MRMSAPI.Entity;
 
 import jakarta.persistence.*;
 
+/*
+Medical record Entity class
+*/
 @Entity
 @Table(name="medical_record")
 public class MedicalRecord {

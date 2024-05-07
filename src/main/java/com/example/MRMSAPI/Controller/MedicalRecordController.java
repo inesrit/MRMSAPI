@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/*
+Medical records rest API controller
+*/
 @RestController
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("api/v1/medical-record")

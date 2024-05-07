@@ -1,6 +1,8 @@
 # MRMSAPI
 Medical Records Management System
 
+This is the Backend Java API of the system
+
 ![patientdashboard.png](patientdashboard.png)
 
 ## Overview
@@ -23,17 +25,15 @@ This is a web-based healthcare system designed to streamline the management of p
 - **API Backend URL:** https://mrms-96547282c657.herokuapp.com/api/v1
 - **ReactApp Frontend URL:** https://appmrms-49191739e0bc.herokuapp.com/signup
 
-## Remote Setup
-1. Clone the repository: **git clone <repository-url>**
+## Remote Setup API
+1. Clone the repository: **git clone https://github.com/inesrit/MRMSAPI.git**
 2. Navigate to the project directory: **cd MRMSAPI**
 3. Install dependencies:
-- Frontend: **cd AppMRMS && npm install**
 - Backend: **./mvnw install**
 4. Configure database connection to local MySQL database in **application.properties** file.
 5. Modify src/main/java/com/example/MRMSAPI/Config/SecurityConfig.java corsConfigurationSource method allowed origins to local server.
-5. Modify AppMRMS/src/pages: **Modify all files API calls to local react server**
 6. Run the backend server: **./mvnw spring-boot:run**
-7. Run the frontend server: **cd AppMRMS && npm start**
+
 
 ## Using it
 1. Register as a patient or healthcare provider from **/signup or /hpsignup**

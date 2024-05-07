@@ -15,6 +15,10 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.*;
 
+/*
+Appointment Data JPA repository class
+*/
+
 @EnableJpaRepositories
 @Repository
 public interface AppointmentRepo  extends JpaRepository<Appointment, Integer> {

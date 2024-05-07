@@ -5,6 +5,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
+/*
+Patient Data JPA repository class
+*/
+
 @EnableJpaRepositories
 @Repository
 public interface PatientRepo extends JpaRepository<Patient, Integer>{

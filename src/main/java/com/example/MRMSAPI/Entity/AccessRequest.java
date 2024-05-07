@@ -7,6 +7,10 @@ import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
+/*
+Access Request Entity class
+*/
+
 @Entity
 @Table(name = "access_request")
 public class AccessRequest {

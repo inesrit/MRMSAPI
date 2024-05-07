@@ -5,6 +5,10 @@ import com.example.MRMSAPI.Entity.Patient;
 
 import java.util.*;
 
+/*
+User or healthcare provider Entity class
+*/
+
 @Entity
 @Table(name="user")
 public class User {

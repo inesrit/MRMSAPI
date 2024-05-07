@@ -15,6 +15,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+
+/*
+Prescription Data JPA repository class
+*/
+
 @EnableJpaRepositories
 @Repository
 public interface PrescriptionRepo  extends JpaRepository<Prescription, Integer>{

@@ -12,6 +12,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+/*
+Medical Record Data JPA repository class
+*/
+
 @EnableJpaRepositories
 @Repository
 public interface MedicalRecordRepo extends JpaRepository<MedicalRecord, Integer>{

@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/*
+Patient service class
+*/
+
 @Service
 public class PatientService {
 

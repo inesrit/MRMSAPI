@@ -1,5 +1,8 @@
 package com.example.MRMSAPI.Dto;
 
+/*
+Login data transfer object
+*/
 public class LoginDTO {
     private String email;
     private String password;

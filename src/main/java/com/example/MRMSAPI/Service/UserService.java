@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/*
+User or healthcare provider service class
+*/
+
 @Service
 public class UserService {
 

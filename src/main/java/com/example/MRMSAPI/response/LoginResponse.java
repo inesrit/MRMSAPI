@@ -3,6 +3,10 @@ package com.example.MRMSAPI.response;
 import com.example.MRMSAPI.Entity.Patient;
 import com.example.MRMSAPI.Entity.User;
 
+/*
+Login response class, to structure response from api calls after login
+*/
+
 public class LoginResponse {
     String message;
     Boolean status;

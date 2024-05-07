@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/*
+Access Request service class
+*/
+
 @Service
 public class AccessRequestService {
 
