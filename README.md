@@ -31,8 +31,9 @@ This is a web-based healthcare system designed to streamline the management of p
 3. Install dependencies:
 - Backend: **./mvnw install**
 4. Configure database connection to local MySQL database in **application.properties** file.
-5. Modify src/main/java/com/example/MRMSAPI/Config/SecurityConfig.java corsConfigurationSource method allowed origins to local server.
-6. Run the backend server: **./mvnw spring-boot:run**
+5. Modify src/main/java/com/example/MRMSAPI/Config/SecurityConfig.java corsConfigurationSource method allowed origins to local frontend server.
+6. Inside package com.example.MRMSAPI.Controller: change all controller classes CrosssOrigin origins to local frontend server.
+7. Run the backend server: **./mvnw spring-boot:run**
 
 
 ## Using it

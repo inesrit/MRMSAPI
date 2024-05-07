@@ -17,7 +17,7 @@ Prescription rest API controller
 */
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@CrossOrigin(origins = "https://appmrms-49191739e0bc.herokuapp.com", allowCredentials = "true")
 @RequestMapping("api/v1/prescription")
 public class PrescriptionController {
 
